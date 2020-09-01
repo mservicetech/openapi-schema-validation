@@ -1,23 +1,19 @@
-# Compiled class file
-*.class
-
-# Log file
+target/
+bower_components/
+node_modules/
+dist/
+.idea/
+.tmp/
+.project
+.classpath
+.settings
+.metadata/
+*.iml
 *.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
+*.tmp
 *.zip
-*.tar.gz
-*.rar
+*.bak
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/.gradle/

@@ -67,7 +67,7 @@ public class OpenApiHelper {
         }
     }
 
-    private  List<String> getOAuth2Name() {
+    protected   List<String> getOAuth2Name() {
         List<String> names = new ArrayList<>();
         Map<String, SecurityScheme> defMap = openApi3.getSecuritySchemes();
         if(defMap != null) {
@@ -80,7 +80,7 @@ public class OpenApiHelper {
         return names;
     }
 
-    private  String getBasePath() {
+    protected  String getBasePath() {
 
         String basePath = "";
         String url = null;

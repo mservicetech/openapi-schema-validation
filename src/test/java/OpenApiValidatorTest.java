@@ -1,6 +1,7 @@
 import com.mservicetech.openapi.validation.OpenApiValidator;
 import com.networknt.openapi.OpenApiHandler;
 import com.networknt.openapi.OpenApiHelper;
+import com.networknt.status.Status;
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import org.junit.Assert;
@@ -26,13 +27,24 @@ public class OpenApiValidatorTest {
 
     @Test
     public void testFileLoad() {
-//        InputStream in =  this.getClass().getClassLoader().getResourceAsStream("openapi.yaml");
-//        String spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-//        System.out.println(spec);
 
         Assert.assertNotNull(openApiValidator.openApiHelper.getOpenApi3());
         Assert.assertNotNull(openApiValidator.openApiHelper.basePath);
     }
 
+    @Test
+    public void testURLPath() {
+        Status status1 = openApiValidator.validateRequestPath("/pets", "get", null);
+        Assert.assertNull(status1);
+        Status status2 = openApiValidator.validateRequestPath("/pets/1111", "get", null);
+        Assert.assertNull(status2);
+        Status status3 = openApiValidator.validateRequestPath("/pets1/v1/1111", "get", null);
+        Assert.assertNotNull(status3);
+        Assert.assertEquals( status3.getCode(), "ERR10007");
+    }
 
+    @Test
+    public void testRequestBody() {
+
+    }
 }

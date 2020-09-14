@@ -17,7 +17,6 @@
 package com.mservicetech.openapi.validation;
 
 import com.mservicetech.openapi.common.OpenApiLoadException;
-import com.networknt.config.Config;
 import com.networknt.oas.OpenApiParser;
 import com.networknt.oas.model.OpenApi3;
 import com.networknt.oas.model.SecurityScheme;

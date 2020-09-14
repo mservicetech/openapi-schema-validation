@@ -17,7 +17,6 @@ import com.networknt.schema.SchemaValidatorsConfig;
 import com.networknt.status.Status;
 
 import com.networknt.utility.StringUtils;
-import io.undertow.server.HttpServerExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +41,11 @@ public class OpenApiValidator {
     public OpenApiHelper openApiHelper;
     public SchemaValidator schemaValidator;
 
+    /**
+     * Construct a new request validator with the given schema validator.
+     *
+     * The default construct will try to load openapi.yml file from classpath
+     */
     public OpenApiValidator() {
         try {
             InputStream in = this.getClass().getResourceAsStream(OPENAPI_YML_CONFIG);
@@ -56,6 +60,11 @@ public class OpenApiValidator {
         }
     }
 
+    /**
+     * Construct a new request validator with the given schema validator.
+     *
+     * @param openapiPath The schema file name and path to use when validating request bodies
+     */
     public OpenApiValidator(String openapiPath) {
         InputStream in = this.getClass().getClassLoader().getResourceAsStream(openapiPath);
         spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
@@ -63,12 +72,24 @@ public class OpenApiValidator {
         schemaValidator = new SchemaValidator(openApiHelper.getOpenApi3());
     }
 
+    /**
+     * Construct a new request validator with the given schema validator.
+     *
+     * @param openapi The schema input stream to use when validating request bodies
+     */
     public OpenApiValidator(InputStream openapi) {
         spec = new BufferedReader(new InputStreamReader(openapi, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
         openApiHelper = new OpenApiHelper(spec);
         schemaValidator = new SchemaValidator(openApiHelper.getOpenApi3());
     }
 
+    /**
+     * Validate the request against the given API operation
+     * @param requestURI normalised path
+     * @param httpMethod Http method definition (get/post/put/delete)
+     * @param requestEntity wrap object for request
+     * @return A validation report containing validation errors
+     */
     public Status validateRequestPath (String requestURI , String httpMethod, RequestEntity requestEntity ) {
         requireNonNull(openApiHelper, "openApiHelper object cannot be null");
         final NormalisedPath requestPath = new ApiNormalisedPath(requestURI, openApiHelper.getOpenApi3(), openApiHelper.getBasePath());

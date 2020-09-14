@@ -1,6 +1,8 @@
 package com.mservicetech.openapi.validation;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.mservicetech.openapi.common.RequestEntity;
+import com.networknt.config.Config;
 import com.networknt.jsonoverlay.Overlay;
 import com.networknt.oas.model.Operation;
 import com.networknt.oas.model.Parameter;
@@ -15,6 +17,7 @@ import com.networknt.schema.SchemaValidatorsConfig;
 import com.networknt.status.Status;
 
 import com.networknt.utility.StringUtils;
+import io.undertow.server.HttpServerExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,8 +92,17 @@ public class OpenApiValidator {
         if (requestEntity!=null) {
             Status status = validateRequestParameters(requestEntity, requestPath, openApiOperation);
             if(status != null) return status;
-            if (requestEntity.getContentType()==null || requestEntity.getContentType().startsWith("application/json")) {
-                status = validateRequestBody(requestEntity.getRequestBody(), openApiOperation);
+            if ((requestEntity.getContentType()==null || requestEntity.getContentType().startsWith("application/json"))) {
+                try {
+                    Object body = attachJsonBody(requestEntity.getRequestBody());
+                    if (body!=null) {
+                        status = validateRequestBody(body, openApiOperation);
+                    }
+                } catch (Exception e) {
+                     status = new Status( VALIDATOR_REQUEST_BODY_UNEXPECTED, requestPath.normalised());
+                }
+
+
             }
             return status;
         }
@@ -98,7 +110,7 @@ public class OpenApiValidator {
         return null;
     }
 
-    protected Status validateRequestBody (String requestBody, OpenApiOperation openApiOperation) {
+    protected Status validateRequestBody (Object requestBody, OpenApiOperation openApiOperation) {
         requireNonNull(openApiHelper, "openApiHelper object cannot be null");
         requireNonNull(schemaValidator, "schemaValidator object cannot be null");
 
@@ -142,13 +154,14 @@ public class OpenApiValidator {
     }
 
     private Status validatePathParameters(final RequestEntity requestEntity, final NormalisedPath requestPath, final OpenApiOperation openApiOperation) {
-        ValidationResult result = validateDeserializedValues(requestEntity, openApiOperation.getOperation().getParameters(), ParameterType.PATH);
+        if (requestEntity.getPathParameters()!=null && !requestEntity.getPathParameters().isEmpty()) {
+            ValidationResult result = validateDeserializedValues(requestEntity, openApiOperation.getOperation().getParameters(), ParameterType.PATH);
 
-        if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
-            return result.getStatus();
+            if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
+                return result.getStatus();
+            }
+
         }
-
-
         return null;
     }
 
@@ -188,10 +201,13 @@ public class OpenApiValidator {
     }
 
     private Status validateQueryParameters(final RequestEntity requestEntity, final OpenApiOperation openApiOperation) {
-        ValidationResult result = validateDeserializedValues(requestEntity, openApiOperation.getOperation().getParameters(), ParameterType.QUERY);
+        if (requestEntity.getQueryParameters()!=null && !requestEntity.getQueryParameters().isEmpty()) {
+            ValidationResult result = validateDeserializedValues(requestEntity, openApiOperation.getOperation().getParameters(), ParameterType.QUERY);
 
-        if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
-            return result.getStatus();
+            if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
+                return result.getStatus();
+            }
+
         }
 
         return null;
@@ -202,15 +218,18 @@ public class OpenApiValidator {
     private Status validateHeaderParameters(final RequestEntity requestEntity,
                                             final OpenApiOperation openApiOperation) {
 
-        // validate path level parameters for headers first.
-        Optional<Status> optional = validatePathLevelHeaders(requestEntity, openApiOperation);
-        if(optional.isPresent()) {
-            return optional.get();
-        } else {
-            // validate operation level parameter for headers second.
-            optional = validateOperationLevelHeaders(requestEntity, openApiOperation);
-            return optional.orElse(null);
+        if (requestEntity.getHeaderParameters() != null && !requestEntity.getHeaderParameters().isEmpty()) {
+            // validate path level parameters for headers first.
+            Optional<Status> optional = validatePathLevelHeaders(requestEntity, openApiOperation);
+            if(optional.isPresent()) {
+                return optional.get();
+            } else {
+                // validate operation level parameter for headers second.
+                optional = validateOperationLevelHeaders(requestEntity, openApiOperation);
+                return optional.orElse(null);
+            }
         }
+        return null;
     }
 
     private Optional<Status> validatePathLevelHeaders(final RequestEntity requestEntity, final OpenApiOperation openApiOperation) {
@@ -237,16 +256,18 @@ public class OpenApiValidator {
 
     private Status validateCookieParameters(final RequestEntity requestEntity,
                                             final OpenApiOperation openApiOperation) {
-
-        // validate path level parameters for cookies first.
-        Optional<Status> optional = validatePathLevelCookies(requestEntity, openApiOperation);
-        if (optional.isPresent()) {
-            return optional.get();
-        } else {
-            // validate operation level parameter for cookies second.
-            optional = validateOperationLevelCookies(requestEntity, openApiOperation);
-            return optional.orElse(null);
+        if (requestEntity.getCookieParameters()!=null && !requestEntity.getCookieParameters().isEmpty()) {
+            // validate path level parameters for cookies first.
+            Optional<Status> optional = validatePathLevelCookies(requestEntity, openApiOperation);
+            if (optional.isPresent()) {
+                return optional.get();
+            } else {
+                // validate operation level parameter for cookies second.
+                optional = validateOperationLevelCookies(requestEntity, openApiOperation);
+                return optional.orElse(null);
+            }
         }
+        return null;
     }
 
     private Optional<Status> validatePathLevelCookies(final RequestEntity requestEntity, final OpenApiOperation openApiOperation) {
@@ -269,6 +290,32 @@ public class OpenApiValidator {
         }
 
         return Optional.ofNullable(null);
+    }
+
+    /**
+     * Method used to parse the body into a Map or a List and attach it into exchange
+     *
+     * @param bodyString   unparsed request body
+     * @throws IOException
+     * @return body object
+     */
+    private Object attachJsonBody( String bodyString) throws Exception {
+        Object body = null;
+        if (bodyString != null) {
+            bodyString = bodyString.trim();
+            if (bodyString.startsWith("{")) {
+                body = Config.getInstance().getMapper().readValue(bodyString, new TypeReference<Map<String, Object>>() {
+                });
+            } else if (bodyString.startsWith("[")) {
+                body = Config.getInstance().getMapper().readValue(bodyString, new TypeReference<List<Object>>() {
+                });
+            } else {
+                // error here. The content type in head doesn't match the body.
+                throw new Exception("The content type in head doesn't match the body");
+            }
+
+        }
+        return body;
     }
 
     class ValidationResult {

@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class OpenApiValidatorTest {
@@ -77,5 +79,42 @@ public class OpenApiValidatorTest {
         Assert.assertNotNull(status);
         Assert.assertEquals( status.getCode(), "ERR11004");
         //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - requestBody.id: string found, integer expected","severity":"ERROR"}
+    }
+
+    @Test
+    public void testRequestPath() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> pathMap = new HashMap<>();
+        pathMap.put("petId", "1122");
+        requestEntity.setPathParameters(pathMap);
+        Status status = openApiValidator.validateRequestPath("/pets/{petId}", "get", requestEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testRequestPath2() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> pathMap = new HashMap<>();
+        pathMap.put("petId", 1122);
+        requestEntity.setPathParameters(pathMap);
+        Status status = openApiValidator.validateRequestPath("/pets/{petId}", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - petId: integer found, string expected","severity":"ERROR"}
+    }
+
+    @Test
+    public void testRequestPath3() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> pathMap = new HashMap<>();
+        pathMap.put("petId2", "1122");
+        requestEntity.setPathParameters(pathMap);
+        Status status = openApiValidator.validateRequestPath("/pets/{petId}", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11001");
+        //{"statusCode":400,"code":"ERR11001","message":"VALIDATOR_REQUEST_PARAMETER_MISSING","description":"Parameter get is required but is missing.","severity":"ERROR"}
     }
 }

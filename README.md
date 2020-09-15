@@ -81,7 +81,7 @@ OpenApiValidator openApiValidator = new OpenApiValidator(InputStream openapi)
 
 It will use the input stream as openapi specification 
 
-### build request entity based on you request object:
+### Build request entity based on you request object:
 
    RequestEntity requestEntity = new RequestEntity();
    
@@ -96,7 +96,7 @@ It will use the input stream as openapi specification
 
  For the request body, the component will validate it only if the contentType = "application/json"
  
- ### implement validation:
+ ### Implement validation:
  
   Status status = openApiValidator.validateRequestPath("/pets", "post", requestEntity);
   

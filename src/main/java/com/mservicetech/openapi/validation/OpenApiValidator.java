@@ -35,6 +35,7 @@ public class OpenApiValidator {
 
     final String VALIDATOR_REQUEST_BODY_UNEXPECTED = "ERR11013";
     final String VALIDATOR_REQUEST_BODY_MISSING = "ERR11014";
+    final String VALIDATOR_REQUEST_PARAMETER_MISSING = "ERR11001";
 
 
     public String spec;
@@ -175,13 +176,13 @@ public class OpenApiValidator {
     }
 
     private Status validatePathParameters(final RequestEntity requestEntity, final NormalisedPath requestPath, final OpenApiOperation openApiOperation) {
-        if (requestEntity.getPathParameters()!=null && !requestEntity.getPathParameters().isEmpty()) {
-            ValidationResult result = validateDeserializedValues(requestEntity, openApiOperation.getOperation().getParameters(), ParameterType.PATH);
+        ValidationResult result = validateDeserializedValues(requestEntity, openApiOperation.getOperation().getParameters(), ParameterType.PATH);
 
-            if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
-                return result.getStatus();
-            }
-
+        if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
+            return result.getStatus();
+        }
+        if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
+            return new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original());
         }
         return null;
     }
@@ -208,13 +209,13 @@ public class OpenApiValidator {
         if (null!=type && StringUtils.isNotBlank(name)) {
             switch(type){
                 case QUERY:
-                    return requestEntity.getQueryParameters().get(name);
+                    return requestEntity.getQueryParameters()==null? null:requestEntity.getQueryParameters().get(name);
                 case PATH:
-                    return requestEntity.getPathParameters().get(name);
+                    return requestEntity.getPathParameters()==null?null:requestEntity.getPathParameters().get(name);
                 case HEADER:
-                    return requestEntity.getHeaderParameters().get(name);
+                    return requestEntity.getHeaderParameters()==null?null:requestEntity.getHeaderParameters().get(name);
                 case COOKIE:
-                    return requestEntity.getCookieParameters().get(name);
+                    return requestEntity.getCookieParameters()==null?null:requestEntity.getCookieParameters().get(name);
             }
         }
 
@@ -222,15 +223,14 @@ public class OpenApiValidator {
     }
 
     private Status validateQueryParameters(final RequestEntity requestEntity, final OpenApiOperation openApiOperation) {
-        if (requestEntity.getQueryParameters()!=null && !requestEntity.getQueryParameters().isEmpty()) {
-            ValidationResult result = validateDeserializedValues(requestEntity, openApiOperation.getOperation().getParameters(), ParameterType.QUERY);
+        ValidationResult result = validateDeserializedValues(requestEntity, openApiOperation.getOperation().getParameters(), ParameterType.QUERY);
 
-            if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
-                return result.getStatus();
-            }
-
+        if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
+            return result.getStatus();
         }
-
+        if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
+            return new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original());
+        }
         return null;
     }
 
@@ -239,18 +239,16 @@ public class OpenApiValidator {
     private Status validateHeaderParameters(final RequestEntity requestEntity,
                                             final OpenApiOperation openApiOperation) {
 
-        if (requestEntity.getHeaderParameters() != null && !requestEntity.getHeaderParameters().isEmpty()) {
-            // validate path level parameters for headers first.
-            Optional<Status> optional = validatePathLevelHeaders(requestEntity, openApiOperation);
-            if(optional.isPresent()) {
-                return optional.get();
-            } else {
-                // validate operation level parameter for headers second.
-                optional = validateOperationLevelHeaders(requestEntity, openApiOperation);
-                return optional.orElse(null);
-            }
+        // validate path level parameters for headers first.
+        Optional<Status> optional = validatePathLevelHeaders(requestEntity, openApiOperation);
+        if(optional.isPresent()) {
+            return optional.get();
+        } else {
+            // validate operation level parameter for headers second.
+            optional = validateOperationLevelHeaders(requestEntity, openApiOperation);
+            return optional.orElse(null);
         }
-        return null;
+
     }
 
     private Optional<Status> validatePathLevelHeaders(final RequestEntity requestEntity, final OpenApiOperation openApiOperation) {
@@ -259,7 +257,9 @@ public class OpenApiValidator {
         if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
             return Optional.ofNullable(result.getStatus());
         }
-
+        if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
+            return Optional.ofNullable(new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original()));
+        }
         return Optional.ofNullable(null);
     }
 
@@ -271,24 +271,24 @@ public class OpenApiValidator {
         if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
             return Optional.ofNullable(result.getStatus());
         }
-
+        if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
+            return Optional.ofNullable(new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original()));
+        }
         return Optional.ofNullable(null);
     }
 
     private Status validateCookieParameters(final RequestEntity requestEntity,
                                             final OpenApiOperation openApiOperation) {
-        if (requestEntity.getCookieParameters()!=null && !requestEntity.getCookieParameters().isEmpty()) {
-            // validate path level parameters for cookies first.
-            Optional<Status> optional = validatePathLevelCookies(requestEntity, openApiOperation);
-            if (optional.isPresent()) {
-                return optional.get();
-            } else {
-                // validate operation level parameter for cookies second.
-                optional = validateOperationLevelCookies(requestEntity, openApiOperation);
-                return optional.orElse(null);
-            }
+        // validate path level parameters for cookies first.
+        Optional<Status> optional = validatePathLevelCookies(requestEntity, openApiOperation);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            // validate operation level parameter for cookies second.
+            optional = validateOperationLevelCookies(requestEntity, openApiOperation);
+            return optional.orElse(null);
         }
-        return null;
+
     }
 
     private Optional<Status> validatePathLevelCookies(final RequestEntity requestEntity, final OpenApiOperation openApiOperation) {
@@ -297,7 +297,9 @@ public class OpenApiValidator {
         if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
             return Optional.ofNullable(result.getStatus());
         }
-
+        if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
+            return Optional.ofNullable(new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original()));
+        }
         return Optional.ofNullable(null);
     }
 
@@ -309,7 +311,9 @@ public class OpenApiValidator {
         if (null!=result.getStatus() || result.getSkippedParameters().isEmpty()) {
             return Optional.ofNullable(result.getStatus());
         }
-
+        if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
+            return Optional.ofNullable(new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original()));
+        }
         return Optional.ofNullable(null);
     }
 

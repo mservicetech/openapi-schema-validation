@@ -1,5 +1,6 @@
 package com.mservicetech.openapi.common;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class RequestEntity {
@@ -18,6 +19,7 @@ public class RequestEntity {
     public void setPathParameters(Map<String, ?> pathParameters) {
         this.pathParameters = pathParameters;
     }
+
 
     public Map<String, ?> getQueryParameters() {
         return queryParameters;

@@ -21,6 +21,12 @@ paths:
           schema:
             type: integer
             format: int32
+        - name: includeCode
+          in: query
+          description: indicator if include code in the result
+          required: false
+          schema:
+            type: boolean
       security:
         - petstore_auth:
             - 'read:pets'

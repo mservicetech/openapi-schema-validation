@@ -164,4 +164,28 @@ public class OpenApiValidatorTest {
         Assert.assertEquals( status.getCode(), "ERR11004");
         //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - limit: string found, integer expected","severity":"ERROR"}
     }
+
+    @Test
+    public void testRequestQueryBooleanType() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("includeCode", "true");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testRequestQueryBooleanTypeWithError() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("includeCode", "yes");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - includeCode: string found, boolean expected","severity":"ERROR"}
+    }
 }

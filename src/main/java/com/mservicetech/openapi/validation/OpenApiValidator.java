@@ -194,8 +194,10 @@ public class OpenApiValidator {
                 .filter(p -> ParameterType.is(p.getIn(), type))
                 .forEach(p->{
                     Object deserializedValue = getDeserializedValue(requestEntity, p.getName(), type);
-                    if (null==deserializedValue) {
-                        validationResult.addSkipped(p);
+                    if (null==deserializedValue ) {
+                        if (p.getRequired()) {
+                            validationResult.addSkipped(p);
+                        }
                     }else {
                         Status s = schemaValidator.validate(deserializedValue, Overlay.toJson((SchemaImpl)(p.getSchema())), p.getName());
                         validationResult.addStatus(s);

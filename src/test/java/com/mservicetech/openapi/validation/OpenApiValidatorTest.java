@@ -117,4 +117,51 @@ public class OpenApiValidatorTest {
         Assert.assertEquals( status.getCode(), "ERR11001");
         //{"statusCode":400,"code":"ERR11001","message":"VALIDATOR_REQUEST_PARAMETER_MISSING","description":"Parameter get is required but is missing.","severity":"ERROR"}
     }
+
+    @Test
+    public void testRequestPath4() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> pathMap = new HashMap<>();
+        pathMap.put("petId", "112245");
+        requestEntity.setPathParameters(pathMap);
+        Status status = openApiValidator.validateRequestPath("/pets/{petId}", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - petId: must have a maximum value of 5","severity":"ERROR"}
+    }
+
+    @Test
+    public void testRequestQueryMissNotRequired() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testRequestQueryWithQuery() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testRequestQuery2() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", "abbb");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - limit: string found, integer expected","severity":"ERROR"}
+    }
 }

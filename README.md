@@ -1,5 +1,6 @@
 ## Openapi-schema-validation
 
+[![Build Status](https://travis-ci.org/mservicetech/openapi-schema-validation.svg?branch=master)](https://travis-ci.org/github/mservicetech/openapi-schema-validation) 
 
 Openapi-schema-validation provide a component /library which can be used in restful microservice API to validate request payload by openapi specification.
 

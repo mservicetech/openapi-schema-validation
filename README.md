@@ -62,6 +62,18 @@ The schema validation is validate openapi 3.0 +. The openapi schema should build
 
 ## Usage
 
+Include the dependency in the project pom:
+
+   
+   ```xml
+
+  <dependency>
+    <groupId>com.mservicetech</groupId>
+    <artifactId>openapi-schema-validation</artifactId>
+    <version>1.0.1</version>
+  </dependency>
+   ```
+
 ### Initial the OpenApiValidator
 
 1. default construct:

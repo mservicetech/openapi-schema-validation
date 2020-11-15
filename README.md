@@ -48,11 +48,12 @@ Here are the dependencies.
         <dependency>
            <groupId>com.networknt</groupId>
            <artifactId>json-schema-validator</artifactId>
-           <version>1.0.26</version>
+           <version>1.0.44</version>
         </dependency>
 ```
 
-
+For detail of json-schema-validator, please refer to: https://github.com/networknt/json-schema-validator 
+ 
 ## Prerequisite
 
 The library supports Java 11 and up. If you want to build from the source code, you need to install JDK 11 locally. To support multiple version of JDK, you can use [SDKMAN](https://www.networknt.com/tool/sdk/)
@@ -70,7 +71,7 @@ Include the dependency in the project pom:
   <dependency>
     <groupId>com.mservicetech</groupId>
     <artifactId>openapi-schema-validation</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
   </dependency>
    ```
 

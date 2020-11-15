@@ -49,7 +49,7 @@ public class OpenApiValidator {
      */
     public OpenApiValidator() {
         try {
-            InputStream in = this.getClass().getResourceAsStream(OPENAPI_YML_CONFIG);
+            InputStream in = this.getClass().getClassLoader().getResourceAsStream(OPENAPI_YML_CONFIG);
             if (in == null) {
                 throw new IOException("cannot load openapi spec file");
             }

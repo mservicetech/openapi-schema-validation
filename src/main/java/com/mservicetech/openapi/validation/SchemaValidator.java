@@ -17,8 +17,8 @@
 package com.mservicetech.openapi.validation;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.networknt.config.Config;
 import com.networknt.jsonoverlay.Overlay;
 import com.networknt.oas.model.OpenApi3;
 import com.networknt.oas.model.impl.OpenApi3Impl;
@@ -26,7 +26,7 @@ import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SchemaValidatorsConfig;
 import com.networknt.schema.ValidationMessage;
-import com.networknt.status.Status;
+import com.mservicetech.openapi.common.Status;
 
 import java.util.Set;
 
@@ -47,6 +47,7 @@ public class SchemaValidator {
     private final OpenApi3 api;
     private JsonNode jsonNode;
     private final SchemaValidatorsConfig defaultConfig;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Build a new validator with no API specification.
@@ -115,7 +116,7 @@ public class SchemaValidator {
                 ((ObjectNode)schema).set(COMPONENTS_FIELD, jsonNode);
             }
             JsonSchema jsonSchema = JsonSchemaFactory.getInstance().getSchema(schema, config);
-            final JsonNode content = Config.getInstance().getMapper().valueToTree(value);
+            final JsonNode content = objectMapper.valueToTree(value);
             processingReport = jsonSchema.validate(content, content, at);
         } catch (Exception e) {
             e.printStackTrace();

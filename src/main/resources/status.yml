@@ -1,0 +1,1165 @@
+---
+SUC10200:
+  statusCode: 200
+  code: SUC10200
+  message: OK
+  severity: NA
+  description: The request is handled successfully
+SUC10201:
+  statusCode: 201
+  code: SUC10201
+  message: CREATED
+  severity: NA
+  description: A new resource is created
+SUC10202:
+  statusCode: 202
+  code: SUC10202
+  message: ACCEPTED
+  severity: NA
+  description: The request has been accepted for processing
+SUC10203:
+  statusCode: 203
+  code: SUC10203
+  message: NON-AUTHORITATIVE_INFORMATION
+  severity: NA
+  description: The server received a 200 OK but returned a modified version of response
+SUC10204:
+  statusCode: 204
+  code: SUC10204
+  message: NO_CONTENT
+  severity: NA
+  description: The request is processed but no conent is returned
+SUC10205:
+  statusCode: 205
+  code: SUC10205
+  message: RESET_CONTENT
+  severity: NA
+  description: The request is processed but no conent is returned and document view needs to be reset
+SUC10206:
+  statusCode: 206
+  code: SUC10206
+  message: PARTIAL_CONTENT
+  severity: NA
+  description: The server is delivering only part of the resource
+SUC10207:
+  statusCode: 207
+  code: SUC10207
+  message: MULTI-STATUS
+  severity: NA
+  description: Separate response codes are returned
+SUC10208:
+  statusCode: 208
+  code: SUC10208
+  message: ALREADY_REPORTED
+  severity: NA
+  description: DAV bindings have been returned in a preceding response
+SUC10209:
+  statusCode: 209
+  code: SUC10209
+  message: ALREADY_REPORTED
+  severity: NA
+  description: DAV bindings have been returned in a preceding response
+SUC10226:
+  statusCode: 226
+  code: SUC10226
+  message: IM_USED
+  severity: NA
+  description: The response is a representation of the result of one or more instance-manipulations applied to the current instance
+
+SUC10300:
+  statusCode: 300
+  code: SUC10300
+  message: MULTIPLE_CHOICES
+  severity: NA
+  description: The client can choose multiple options for the resource
+SUC10301:
+  statusCode: 301
+  code: SUC10301
+  message: MOVED_PERMANENTLY
+  severity: NA
+  description: All future requests should be redirect to the give URI
+SUC10302:
+  statusCode: 302
+  code: SUC10302
+  message: FOUND
+  severity: NA
+  description: Please look at (browse to) another url
+SUC10303:
+  statusCode: 303
+  code: SUC10303
+  message: SEE_OTHER
+  severity: NA
+  description: The request can be found under another URI
+SUC10304:
+  statusCode: 304
+  code: SUC10304
+  message: NOT_MODIFIED
+  severity: NA
+  description: The resource has not been modified
+SUC10305:
+  statusCode: 305
+  code: SUC10305
+  message: USE_PROXY
+  severity: NA
+  description: The resource is available only through a proxy
+SUC10306:
+  statusCode: 306
+  code: SUC10306
+  message: SWITCH_PROXY
+  severity: NA
+  description: Subsequent requests should use a specified proxy
+SUC10307:
+  statusCode: 307
+  code: SUC10307
+  message: TEMPORARY_REDIRECT
+  severity: NA
+  description: The request should be repeated with another URI
+SUC10308:
+  statusCode: 308
+  code: SUC10308
+  message: PERMANENT_REDIRECT
+  severity: NA
+  description: The request and all future requests should be repeated with another URI
+
+# 10000-11000 Light Java Framework validation errors
+ERR10000:
+  statusCode: 401
+  code: ERR10000
+  message: INVALID_AUTH_TOKEN
+  description: Incorrect signature or malformed token in authorization header
+ERR10001:
+  statusCode: 401
+  code: ERR10001
+  message: AUTH_TOKEN_EXPIRED
+  description: Jwt token in authorization header expired
+ERR10002:
+  statusCode: 401
+  code: ERR10002
+  message: MISSING_AUTH_TOKEN
+  description: No Authorization header or the token is not bearer type
+ERR10003:
+  statusCode: 401
+  code: ERR10003
+  message: INVALID_SCOPE_TOKEN
+  description: Incorrect signature or malformed token in X-Scope-Token header
+ERR10004:
+  statusCode: 401
+  code: ERR10004
+  message: SCOPE_TOKEN_EXPIRED
+  description: Jwt token in X-Scope-Token expired
+ERR10005:
+  statusCode: 403
+  code: ERR10005
+  message: AUTH_TOKEN_SCOPE_MISMATCH
+  description: Scopes %s in authorization token and specification scopes %s are not matched
+ERR10006:
+  statusCode: 403
+  code: ERR10006
+  message: SCOPE_TOKEN_SCOPE_MISMATCH
+  description: Scopes %s in scope token and specification scopes %s are not matched
+ERR10007:
+  statusCode: 404
+  code: ERR10007
+  message: INVALID_REQUEST_PATH
+  description: Request path %s cannot be found in the spec.
+ERR10008:
+  statusCode: 405
+  code: ERR10008
+  message: METHOD_NOT_ALLOWED
+  description: Request method cannot be found in the spec.
+ERR10009:
+  statusCode: 408
+  code: ERR10009
+  message: CLIENT_CREDENTIALS_TOKEN_NOT_AVAILABLE
+  description: Could not get client credentials token in client module
+ERR10010:
+  statusCode: 500
+  code: ERR10010
+  message: RUNTIME_EXCEPTION
+  description: Unexpected runtime exception
+ERR10011:
+  statusCode: 400
+  code: ERR10011
+  message: UNCAUGHT_EXCEPTION
+  description: Uncaught exception
+ERR10012:
+  statusCode: 400
+  code: ERR10012
+  message: MISSING_SWAGGER_OPERATION
+  description: SwaggerHandler or JwtVerifyHandler needs to be enabled
+ERR10013:
+  statusCode: 404
+  code: ERR10013
+  message: SERVER_INFO_DISABLED
+  description: Server info handler is disabled in info.json
+ERR10014:
+  statusCode: 400
+  code: ERR10014
+  message: GENERIC_EXCEPTION
+  description: Generic Exception %s.
+ERR10015:
+  statusCode: 400
+  code: ERR10015
+  message: CONTENT_TYPE_MISMATCH
+  description: Content type in header %s doesn't match the body. The body might be trucated due to bufferSize to small in client.xml
+ERR10016:
+  statusCode: 400
+  code: ERR10016
+  message: MISSING_HANDlER
+  description: Could not find the handler for the endpoint %s.
+ERR10017:
+  statusCode: 400
+  code: ERR10017
+  message: SQL_EXCEPTION
+  description: Sql Exception %s.
+ERR10018:
+  statusCode: 500
+  code: ERR10018
+  message: CREATE_REGISTRY_ERROR
+  description: Failed to create registry for url %s
+ERR10019:
+  statusCode: 500
+  code: ERR10019
+  message: PARSE_DIRECT_URL_ERROR
+  description: parse direct url error, invalid direct registry address %s, address should be ip1:port1,ip2:port2 ...
+ERR10020:
+  statusCode: 500
+  code: ERR10020
+  message: REGISTER_ERROR
+  description: Class %s fails to register %s to %s
+ERR10021:
+  statusCode: 500
+  code: ERR10021
+  message: UNREGISTER_ERROR
+  description: Class %s fails to unregister %s to %s
+ERR10022:
+  statusCode: 500
+  code: ERR10022
+  message: SUBSCRIBE_ERROR
+  description: Class %s fails to subscribe %s to %s
+ERR10023:
+  statusCode: 500
+  code: ERR10023
+  message: UNSUBSCRIBE_ERROR
+  description: Class %s fails to unsubscribe %s to %s
+ERR10024:
+  statusCode: 500
+  code: ERR10024
+  message: REGISTRY_IS_NULL
+  description: Registry must not be null
+ERR10025:
+  statusCode: 500
+  code: ERR10025
+  message: WEIGHT_OUT_OF_RANGE
+  description: Weight must be integer between 1 and 100 but the actual value is %s
+ERR10026:
+  statusCode: 500
+  code: ERR10026
+  message: GET_NODETYPEPATH_ERROR
+  description: Failed to get nodeTypePath, url %s type %s
+ERR10027:
+  statusCode: 500
+  code: ERR10027
+  message: SUBSCRIBE_ZOOKEEPER_SERVICE_ERROR
+  description: Failed to subscribe service %s to zookeeper(%s), cause %s
+ERR10028:
+  statusCode: 500
+  code: ERR10028
+  message: SUBSCRIBE_ZOOKEEPER_COMMAND_ERROR
+  description: Failed to subscribe command %s to zookeeper(%s), cause %s
+ERR10029:
+  statusCode: 500
+  code: ERR10029
+  message: UNSUBSCRIBE_ZOOKEEPER_SERVICE_ERROR
+  description: Failed to unsubscribe service %s to zookeeper(%s), cause %s
+ERR10030:
+  statusCode: 500
+  code: ERR10030
+  message: UNSUBSCRIBE_ZOOKEEPER_COMMAND_ERROR
+  description: Failed to unsubscribe command %s to zookeeper(%s), cause %s
+ERR10031:
+  statusCode: 500
+  code: ERR10031
+  message: DISCOVER_ZOOKEEPER_SERVICE_ERROR
+  description: Failed to discover service %s from zookeeper(%s), cause %s
+ERR10032:
+  statusCode: 500
+  code: ERR10032
+  message: DISCOVER_ZOOKEEPER_COMMAND_ERROR
+  description: Failed to discover command %s from zookeeper(%s), cause %s
+ERR10033:
+  statusCode: 500
+  code: ERR10033
+  message: REGISTER_ZOOKEEPER_ERROR
+  description: Failed to register %s to zookeeper(%s), cause %s
+ERR10034:
+  statusCode: 500
+  code: ERR10034
+  message: UNREGISTER_ZOOKEEPER_ERROR
+  description: Failed to unregister %s to zookeeper(%s), cause %s
+ERR10035:
+  statusCode: 400
+  code: ERR10035
+  message: AUTHORIZATION_CODE_MISSING
+  description: Authorization code is missing when calling AuthHandler
+ERR10036:
+  statusCode: 400
+  code: ERR10036
+  message: CSRF_HEADER_MISSING
+  description: X-CSRF-TOKEN header is missing in Middleware CsrfHandler
+ERR10037:
+  statusCode: 400
+  code: ERR10037
+  message: REFRESH_TOKEN_RESPONSE_EMPTY
+  description: Empty response returned from OAuth 2.0 provider while using refresh token to get access token
+ERR10038:
+  statusCode: 400
+  code: ERR10038
+  message: CSRF_TOKEN_MISSING_IN_JWT
+  description: CSRF token is missing in JWT token while StatelessAuthHandler is enabled
+ERR10039:
+  statusCode: 400
+  code: ERR10039
+  message: HEADER_CSRF_JWT_CSRF_NOT_MATCH
+  description: CSRF token %s in header is not matched with CSRF token %s in JWT
+ERR10040:
+  statusCode: 400
+  code: ERR10040
+  message: JWT_NOT_FOUND_IN_COOKIES
+  description: JWT token cannot be found in cookies set by StatelessAuthHandler
+ERR10041:
+  statusCode: 400
+  code: ERR10041
+  message: AUDIT_INFO_NOT_FOUND
+  description: AuditInfo could not be found in exchange attachment. Ensure that OpenApiHandler or SwaggerHandler is used
+ERR10042:
+  statusCode: 400
+  code: ERR10042
+  message: ERROR_NOT_DEFINED
+  description: Error code %s is not defined in status.yml file
+ERR10043:
+  statusCode: 400
+  code: ERR10043
+  message: CLIENT_AUTHENTICATE_CLASS_NOT_FOUND
+  description: Authenticate class %s defined for the client could not be found
+ERR10044:
+  statusCode: 400
+  code: ERR10044
+  message: EMPTY_TOKEN_DEREFERENCE_RESPONSE
+  description: OAuth 2.0 provider returns empty response with de-reference token request for token %s
+ERR10045:
+  statusCode: 400
+  code: ERR10045
+  message: TOKEN_DEREFERENCE_ERROR
+  description: Token de-reference from OAuth 2.0 provider returns error %s
+ERR10046:
+  statusCode: 401
+  code: ERR10046
+  message: INVALID_BASIC_HEADER
+  description: Invalid basic authentication header %s
+ERR10047:
+  statusCode: 401
+  code: ERR10047
+  message: INVALID_USERNAME_OR_PASSWORD
+  description: Invalid username or password for basic authentication
+ERR10048:
+  statusCode: 404
+  code: ERR10048
+  message: PATH_NOT_IMPLEMENTED
+  description: No handler defined for path '%s'
+ERR10049:
+  statusCode: 403
+  code: ERR10049
+  message: INVALID_IP_FOR_PATH
+  description: Peer IP %s is not in the whitelist for the endpoint %s
+ERR10050:
+  statusCode: 406
+  code: ERR10050
+  message: NO_ENCODING_HANDLER
+  description: No encoding handler for the required encoder.
+ERR10051:
+  statusCode: 401
+  code: ERR10051
+  message: FAIL_TO_SEND_REQUEST
+  description: Fail to send request to target server.
+ERR10052:
+  statusCode: 401
+  code: ERR10052
+  message: GET_TOKEN_ERROR
+  description: Cannot get valid token %s.
+ERR10053:
+  statusCode: 401
+  code: ERR10053
+  message: ESTABLISH_CONNECTION_ERROR
+  description: Cannot establish connection for url %s.
+ERR10054:
+  statusCode: 401
+  code: ERR10054
+  message: GET_TOKEN_TIMEOUT
+  description: Cannot get valid token, probably due to a timeout.
+ERR10055:
+  statusCode: 400
+  code: ERR10055
+  message: TLS_TRUSTSTORE_ERROR
+  description: Cannot load client.truststore to create HttpClient.
+ERR10056:
+  statusCode: 400
+  code: ERR10056
+  message: OAUTH_SERVER_URL_ERROR
+  description: Neither server_url nor serviceId is configured in client.yml for %s.
+ERR10057:
+  statusCode: 400
+  code: ERR10057
+  message: CONFIG_PROPERTY_MISSING
+  description: Config property %s is missing in config file %s.
+ERR10058:
+  statusCode: 400
+  code: ERR10058
+  message: ERROR_CONNECT_REGISTRY
+  description: Failed to connect to the registry %s.
+ERR10059:
+  statusCode: 400
+  code: ERR10059
+  message: REQUEST_BODY_MISSING
+  description: Request body is missing.
+ERR10060:
+  statusCode: 400
+  code: ERR10060
+  message: CONFIG_VALUE_INVALID
+  description: Config value %s for key %s invalid in config file %s.
+
+# 11000-11500 swagger-validator errors
+ERR11000:
+  statusCode: 400
+  code: ERR11000
+  message: VALIDATOR_REQUEST_PARAMETER_QUERY_MISSING
+  description: Query parameter %s is required on path %s but not found in request.
+ERR11001:
+  statusCode: 400
+  code: ERR11001
+  message: VALIDATOR_REQUEST_PARAMETER_MISSING
+  description: Parameter %s is required but is missing.
+ERR11002:
+  statusCode: 400
+  code: ERR11002
+  message: VALIDATOR_REQUEST_PARAMETER_ENUM_INVALID
+  description: Value %s for parameter %s is not allowed. Allowed values are <%s>.
+ERR11003:
+  statusCode: 400
+  code: ERR11003
+  message: VALIDATOR_SCHEMA_INVALID_JSON
+  description: Unable to parse JSON - %s
+ERR11004:
+  statusCode: 400
+  code: ERR11004
+  message: VALIDATOR_SCHEMA
+  description: Schema Validation Error - %s
+ERR11005:
+  statusCode: 400
+  code: ERR11005
+  message: VALIDATOR_REQUEST_PARAMETER_COLLECTION_INVALID_FORMAT
+  description: Parameter %s expected collection format of %s but %s was used instead.
+ERR11006:
+  statusCode: 400
+  code: ERR11006
+  message: VALIDATOR_REQUEST_PARAMETER_COLLECTION_TOO_MANY_ITEMS
+  description: Parameter %s accepts a maximum of %d items. Found %d.
+ERR11007:
+  statusCode: 400
+  code: ERR11007
+  message: VALIDATOR_REQUEST_PARAMETER_COLLECTION_TOO_FEW_ITEMS
+  description: Parameter %s accepts a minimum of %d items. Found %d.
+ERR11008:
+  statusCode: 400
+  code: ERR11008
+  message: VALIDATOR_REQUEST_PARAMETER_COLLECTION_DUPLICATE_ITEMS
+  description: Parameter %s does not allow duplicate values.
+ERR11009:
+  statusCode: 400
+  code: ERR11009
+  message: VALIDATOR_REQUEST_PARAMETER_ENUM_INVALID
+  description: Value %s for parameter %s is not allowed. Allowed values are <%s>.
+ERR11010:
+  statusCode: 400
+  code: ERR11010
+  message: VALIDATOR_REQUEST_PARAMETER_INVALID_FORMAT
+  description: Value %s for parameter %s does not match type %s with format %s.
+ERR11011:
+  statusCode: 400
+  code: ERR11011
+  message: VALIDATOR_REQUEST_PARAMETER_NUMBER_BELOW_MIN
+  description: Value %s for parameter %s less than allowed min value %f.
+ERR11012:
+  statusCode: 400
+  code: ERR11012
+  message: VALIDATOR_REQUEST_PARAMETER_NUMBER_ABOVE_MAX
+  description: Value %s for parameter %s greater than allowed max value %f.
+ERR11013:
+  statusCode: 400
+  code: ERR11013
+  message: VALIDATOR_REQUEST_BODY_UNEXPECTED
+  description: No request body is expected for %s on path %s.
+ERR11014:
+  statusCode: 400
+  code: ERR11014
+  message: VALIDATOR_REQUEST_BODY_MISSING
+  description: Method %s on path %s requires a request body. None found.
+ERR11015:
+  statusCode: 400
+  code: ERR11015
+  message: VALIDATOR_RESPONSE_STATUS_UNKNOWN
+  description: Response status %d not defined for path %s.
+ERR11016:
+  statusCode: 400
+  code: ERR11016
+  message: VALIDATOR_RESPONSE_BODY_MISSING
+  description: Method %s on path %s defines a response schema but no response body found.
+ERR11017:
+  statusCode: 400
+  code: ERR11017
+  message: VALIDATOR_REQUEST_PARAMETER_HEADER_MISSING
+  description: Header parameter %s is required on path %s but not found in request.
+ERR11018:
+  statusCode: 400
+  code: ERR11018
+  message: VALIDATOR_RESPONSE_CONTENT_UNEXPECTED
+  description: No response body content or schema is expected for %s on path %s.
+
+# 11100-11199 Light Code Generator validation errors
+ERR11100:
+  statusCode: 400
+  code: ERR11100
+  message: INVALID_FRAMEWORK
+  description: Invalid framework %s.
+ERR11101:
+  statusCode: 400
+  code: ERR11101
+  message: MISSING_GENERATOR_ITEM
+  description: Missing generator item.
+ERR11102:
+  statusCode: 400
+  code: ERR11102
+  message: INVALID_CONFIG_HTTP_LISTEN_TYPE
+  description: enableHttp or enableHttps needs to be set to true, but not both.
+ERR11103:
+  statusCode: 400
+  code: ERR11103
+  message: INVALID_MODEL_URL
+  description: Invalid model URL %s.
+ERR11104:
+  statusCode: 400
+  code: ERR11104
+  message: INVALID_CONFIG_JSON
+  description: Invalid config JSON format.
+ERR11105:
+  statusCode: 400
+  code: ERR11105
+  message: INVALID_CONFIG_URL_EXTENSION
+  description: Invalid config URL extension %s.
+ERR11106:
+  statusCode: 400
+  code: ERR11106
+  message: GENERATOR_EXCEPTION
+  description: Exception occurs during generation %s.
+ERR11107:
+  statusCode: 400
+  code: ERR11107
+  message: COMPRESSION_EXCEPTION
+  description: Exception occurs during compression %s.
+
+
+# 11200 - 11299 light hybrid validation errors
+ERR11200:
+  statusCode: 400
+  code: ERR11200
+  message: HANDLER_NOT_FOUND
+  description: Handler for service %s cannot be found.
+ERR11201:
+  statusCode: 400
+  code: ERR11201
+  message: REQUEST_BODY_EMPTY
+  description: Hybrid request body is empty for post method.
+
+ERR11202:
+  statusCode: 400
+  code: ERR11202
+  message: REQUEST_CMD_EMPTY
+  description: Hybrid request cmd parameter is empty for get method.
+
+# 11300-11349 light-proxy
+
+ERR11300:
+  statusCode: 400
+  code: ERR11300
+  message: FAIL_TO_GET_TABLEAU_TOKEN
+  description: Fail to get token from Tableau server.
+ERR11301:
+  statusCode: 400
+  code: ERR11301
+  message: MISSING_TABLEAU_CONTENT_URL
+  description: TableauContentUrl is missing in the request header.
+
+
+# 11350-11399 light-router
+ERR11350:
+  statusCode: 400
+  code: ERR11350
+  message: EMAIL_REGISTERED
+  description: Email %s has been registered with a different userId %s.
+
+# 11400-11499 light-config-server
+ERR11400:
+  statusCode: 400
+  code: ERR11400
+  message: CONFIG_SERVER_INITIALIZED
+  description: The config server has been initialized already with an encryption key.
+ERR11401:
+  statusCode: 400
+  code: ERR11401
+  message: INVALID_INITIALIZE_KEY_FORMAT
+  description: Invalid initialize key format for light-config-server.
+ERR11402:
+  statusCode: 400
+  code: ERR11402
+  message: ERROR_WRITING_KEY_FILE
+  description: Error writing key file to path %s.
+
+# 11500 - 11600 GraphQL valdator errors
+ERR11500:
+  statusCode: 400
+  code: ERR11500
+  message: GRAHPQL_INVALID_PATH
+  description: Invalid GraphQL path %s, must be %s.
+ERR11501:
+  statusCode: 405
+  code: ERR11501
+  message: GRAHPQL_INVALID_METHOD
+  description: Invalid GraphQL method %s, only GET and POST are allowed.
+ERR11502:
+  statusCode: 400
+  code: ERR11502
+  message: GRAHPQL_MISSING_QUERY
+  description: Missing GraphQL query.
+
+# 11601 - 11999 light-portal errors
+ERR11601:
+  statusCode: 400
+  code: ERR11601
+  message: INCORRECT_TOKEN_TYPE
+  description: Incorrect token type. Expecting %s.
+ERR11602:
+  statusCode: 400
+  code: ERR11602
+  message: DELETE_USER_EXCEPTION
+  description: Exception %s is caught when deleting user %s.
+ERR11603:
+  statusCode: 400
+  code: ERR11603
+  message: DELETE_USER_DENIED
+  description: Delete user %s denied with user %s and roles %s.
+ERR11604:
+  statusCode: 400
+  code: ERR11604
+  message: USER_ID_IS_USED
+  description: UserId %s is used already.
+ERR11605:
+  statusCode: 400
+  code: ERR11605
+  message: SEND_MESSAGE_EXCEPITON
+  description: Send message exception caused by %s with user %s.
+ERR11606:
+  statusCode: 400
+  code: ERR11606
+  message: UPDATE_USER_EXCEPTION
+  description: Exception %s is caught when updating user %s.
+ERR11607:
+  statusCode: 404
+  code: ERR11607
+  message: USER_NOT_FOUND_BY_EMAIL
+  description: User not found by email %s.
+ERR11608:
+  statusCode: 400
+  code: ERR11608
+  message: CHANGE_PASSWORD_DENIED
+  description: User %s is not allowed to change password for %s.
+ERR11609:
+  statusCode: 404
+  code: ERR11609
+  message: USER_NOT_FOUND_BY_ID
+  description: User not found by userId %s.
+ERR11610:
+  statusCode: 400
+  code: ERR11610
+  message: EMAIL_NOT_CONFIRMED
+  description: Email %s is not confirmed. Please find the user confirmation email.
+ERR11611:
+  statusCode: 400
+  code: ERR11611
+  message: USER_EMAIL_IS_USED
+  description: User email address %s is registered.
+ERR11612:
+  statusCode: 400
+  code: ERR11612
+  message: WRONG_LOGIN_PASSWORD
+  description: Wrong login password for user with email %s.
+ERR11613:
+  statusCode: 400
+  code: ERR11613
+  message: PASSWORD_NOT_MATCH
+  description: Password and passwordConfirm are not matched.
+ERR11614:
+  statusCode: 400
+  code: ERR11614
+  message: ERROR_HASHING_PASSWORD
+  description: Error in hashing password with exception %s.
+ERR11615:
+  statusCode: 400
+  code: ERR11615
+  message: ERROR_PARSING_USER
+  description: Error in parsing user to JSON with exception %s.
+ERR11616:
+  statusCode: 400
+  code: ERR11616
+  message: ERROR_VALIDATE_PASSWORD
+  description: Password validation error with excetion %s.
+ERR11617:
+  statusCode: 400
+  code: ERR11617
+  message: USER_NOT_ACTIVATED
+  description: User %s is not activated.
+ERR11618:
+  statusCode: 400
+  code: ERR11618
+  message: USER_QUERY_DENIED
+  description: User %s is not matched the JWT user_id %s and not admin role.
+ERR11619:
+  statusCode: 400
+  code: ERR11619
+  message: EMAIL_SENDING_ERROR
+  description: Failed to send the confirmation email to %s.
+ERR11620:
+  statusCode: 400
+  code: ERR11620
+  message: PERMISSION_DENIED
+  description: Fail to access the endpoint for user or roles %s.
+ERR11621:
+  statusCode: 400
+  code: ERR11621
+  message: CITY_REGISTERED
+  description: The city has been registered with key %s, %s, %s.
+ERR11622:
+  statusCode: 400
+  code: ERR11622
+  message: PROFILE_LOCATION_INCOMPLETE
+  description: Country, Province or City is missing in user profile.
+ERR11623:
+  statusCode: 404
+  code: ERR11623
+  message: CITY_NOT_FOUND
+  description: City not found for %s, %s, %s.
+ERR11624:
+  statusCode: 400
+  code: ERR11624
+  message: COUNTRY_PROVINCE_CITY_EMPTY
+  description: Country %s or province %s or city %s is empty.
+ERR11625:
+  statusCode: 404
+  code: ERR11625
+  message: ENTITY_NOT_FOUND
+  description: Entity not found for %s at %s, %s and %s defined in your profile. Please create an entity first.
+ERR11626:
+  statusCode: 404
+  code: ERR11626
+  message: STATUS_NOT_FOUND
+  description: Status not found for email or userId %s.
+ERR11627:
+  statusCode: 404
+  code: ERR11627
+  message: PRIVATE_MESSAGE_NOT_FOUND
+  description: Private message not found for email %s.
+ERR11628:
+  statusCode: 404
+  code: ERR11628
+  message: WEBSITE_NOT_FOUND
+  description: Website not found for email %s.
+ERR11629:
+  statusCode: 400
+  code: ERR11629
+  message: WALLET_QUERY_DENIED
+  description: Taiji Wallet %s email is not matched the JWT user_id %s and not admin role.
+ERR11630:
+  statusCode: 404
+  code: ERR11630
+  message: EMAIL_NOT_FOUND_BY_WALLET
+  description: Email not found for Taiji wallet %s.
+ERR11631:
+  statusCode: 404
+  code: ERR11631
+  message: NO_ENTITY_REGISTERED
+  description: No entity has been registered for the %s, %s, %s, %s, %s combination.
+ERR11632:
+  statusCode: 404
+  code: ERR11632
+  message: PAYMENT_NOT_FOUND_BY_EMAIL
+  description: Payment not found for email %s.
+ERR11633:
+  statusCode: 404
+  code: ERR11633
+  message: ORDER_NOT_FOUND_BY_EMAIL
+  description: Order not found for email %s.
+ERR11634:
+  statusCode: 404
+  code: ERR11634
+  message: REFERENCE_NOT_FOUND
+  description: Reference not found for name %s and language %s.
+ERR11635:
+  statusCode: 400
+  code: ERR11635
+  message: HOST_NOT_MATCH_EMAIL
+  description: Host %s doesn't match the email domain %s.
+ERR11636:
+  statusCode: 400
+  code: ERR11636
+  message: SQL_EXCEPTION
+  description: SQLException with error %s.
+ERR11637:
+  statusCode: 404
+  code: ERR11637
+  message: OBJECT_NOT_FOUND
+  description: Object %s not found for key %s.
+ERR11638:
+  statusCode: 400
+  code: ERR11638
+  message: FILESYSTEM_ERROR
+  description: Error while access filesystem with file %s and error message %s.
+
+
+# OAuth2 service error 12000-13000
+
+ERR12000:
+  statusCode: 400
+  code: ERR12000
+  message: UNABLE_TO_PARSE_FORM_DATA
+  description: Unable to parse x-www-form-urlencoded form data.
+ERR12001:
+  statusCode: 400
+  code: ERR12001
+  message: UNSUPPORTED_GRANT_TYPE
+  description: Unsupported grant type %s. Only authorization_code and client_credentials
+    are supported.
+ERR12002:
+  statusCode: 401
+  code: ERR12002
+  message: MISSING_AUTHORIZATION_HEADER
+  description: Missing authorization header. client credentials must be passed in
+    as Authorization header.
+ERR12003:
+  statusCode: 401
+  code: ERR12003
+  message: INVALID_AUTHORIZATION_HEADER
+  description: Invalid authorization header %s. Basic authentication with credentials
+    is required.
+ERR12004:
+  statusCode: 401
+  code: ERR12004
+  message: INVALID_BASIC_CREDENTIALS
+  description: Invalid Basic credentials %s.
+ERR12005:
+  statusCode: 400
+  code: ERR12005
+  message: JSON_PROCESSING_EXCEPTION
+  description: Json Processing Excepiton %s.
+ERR12007:
+  statusCode: 401
+  code: ERR12007
+  message: UNAUTHORIZED_CLIENT
+  description: Unauthorized client with wrong client secret.
+ERR12008:
+  statusCode: 401
+  code: ERR12008
+  message: INVALID_AUTHORIZATION_CODE
+  description: Invalid Authorization Code %s.
+ERR12009:
+  statusCode: 401
+  code: ERR12009
+  message: INVALID_CODE_REQUEST
+  description: Invalid authorization code request. responseType and client_id are required.
+ERR12011:
+  statusCode: 400
+  code: ERR12011
+  message: PASSWORD_OR_PASSWORDCONFIRM_EMPTY
+  description: Password %s or PasswordConfirm %s is empty.
+ERR12012:
+  statusCode: 400
+  code: ERR12012
+  message: PASSWORD_PASSWORDCONFIRM_NOT_MATCH
+  description: Password %s and PasswordConfirm %s are not matched.
+ERR12013:
+  statusCode: 404
+  code: ERR12013
+  message: USER_NOT_FOUND
+  description: User %s is not found.
+ERR12014:
+  statusCode: 404
+  code: ERR12014
+  message: CLIENT_NOT_FOUND
+  description: Client %s is not found.
+ERR12015:
+  statusCode: 404
+  code: ERR12015
+  message: SERVICE_NOT_FOUND
+  description: Service %s is not found.
+ERR12016:
+  statusCode: 401
+  code: ERR12016
+  message: INCORRECT_PASSWORD
+  description: Incorrect password.
+ERR12017:
+  statusCode: 404
+  code: ERR12017
+  message: KEY_NOT_FOUND
+  description: Public key certificate keyId %s is not found.
+ERR12018:
+  statusCode: 400
+  code: ERR12018
+  message: SERVICE_ID_EXISTS
+  description: Service id %s exists.
+ERR12019:
+  statusCode: 400
+  code: ERR12019
+  message: CLIENT_ID_EXISTS
+  description: Client id %s exists.
+ERR12020:
+  statusCode: 400
+  code: ERR12020
+  message: USER_ID_EXISTS
+  description: User id %s exists.
+ERR12021:
+  statusCode: 400
+  code: ERR12021
+  message: EMAIL_EXISTS
+  description: Email %s exists.
+ERR12022:
+  statusCode: 400
+  code: ERR12022
+  message: USERNAME_REQUIRED
+  description: Username is required for password grant type.
+ERR12023:
+  statusCode: 400
+  code: ERR12023
+  message: PASSWORD_REQUIRED
+  description: Password is required for password grant type.
+ERR12024:
+  statusCode: 400
+  code: ERR12024
+  message: NOT_TRUSTED_CLIENT
+  description: Grant type is allowed only for trusted client type.
+ERR12025:
+  statusCode: 400
+  code: ERR12025
+  message: MISSING_REDIRECT_URI
+  description: Missing redirect_uri in authorization code token service as redirect_uri %s is passed in code service.
+ERR12026:
+  statusCode: 400
+  code: ERR12026
+  message: MISMATCH_REDIRECT_URI
+  description: redirect_uri %s from token service is not identical as redirect_uri %s from code service.
+ERR12027:
+  statusCode: 400
+  code: ERR12027
+  message: MISMATCH_SCOPE
+  description: scope %s does not match previous scope or defined scope for client %s
+ERR12028:
+  statusCode: 400
+  code: ERR12028
+  message: MISMATCH_CLIENT_ID
+  description: client_id %s does not match previous client_id %s in refresh_token request.
+ERR12029:
+  statusCode: 404
+  code: ERR12029
+  message: REFRESH_TOKEN_NOT_FOUND
+  description: Refresh token %s is not found.
+ERR12030:
+  statusCode: 400
+  code: ERR12030
+  message: INVALID_KEY_ID
+  description: Invalid key id %s.
+
+ERR12031:
+  statusCode: 400
+  code: ERR12031
+  message: USER_ID_REQUIRED_FOR_CLIENT_AUTHENTICATED_USER_GRANT_TYPE
+  description: UserId is required for client_authenticated_user grant type.
+
+ERR12032:
+  statusCode: 400
+  code: ERR12032
+  message: USER_TYPE_REQUIRED_FOR_CLIENT_AUTHENTICATED_USER_GRANT_TYPE
+  description: UserType is required for client_authenticated_user grant type.
+
+ERR12033:
+  statusCode: 400
+  code: ERR12033
+  message: INVALID_CODE_CHALLENGE_METHOD
+  description: Invalid PKCE code challenge method %s.
+
+ERR12034:
+  statusCode: 400
+  code: ERR12034
+  message: CODE_CHALLENGE_TOO_SHORT
+  description: PKCE codeChallenge length under lower limit, codeChallenge = %s
+ERR12035:
+  statusCode: 400
+  code: ERR12035
+  message: CODE_CHALLENGE_TOO_LONG
+  description: PKCE codeChallenge length over upper limit, codeChallenge = %s
+ERR12036:
+  statusCode: 400
+  code: ERR12036
+  message: INVALID_CODE_CHALLENGE_FORMAT
+  description: PKCE codeChallenge format is invalid, codeChallenge = %s
+ERR12037:
+  statusCode: 400
+  code: ERR12037
+  message: INVALID_CODE_VERIFIER_FORMAT
+  description: PKCE codeVerifier format is invalid, codeVerifier = %s
+ERR12038:
+  statusCode: 400
+  code: ERR12038
+  message: CODE_VERIFIER_TOO_SHORT
+  description: PKCE codeVerifier length under lower limit , codeVerifier = %s
+ERR12039:
+  statusCode: 400
+  code: ERR12039
+  message: CODE_VERIFIER_TOO_LONG
+  description: PKCE codeVerifier length over upper limit , codeVerifier = %s
+ERR12040:
+  statusCode: 400
+  code: ERR12040
+  message: CODE_VERIFIER_MISSING
+  description: PKCE codeVerifier is not specified
+ERR12041:
+  statusCode: 400
+  code: ERR12041
+  message: CODE_VERIFIER_FAILED
+  description: PKCE verification failed
+
+ERR12042:
+  statusCode: 404
+  code: ERR12042
+  message: SERVICE_ENDPOINT_NOT_FOUND
+  description: Service endpoint not found for serviceId %s
+
+ERR12043:
+  statusCode: 400
+  code: ERR12043
+  message: DEREF_NOT_EXTERNAL
+  description: Only external client type needs optional deref client id
+ERR12044:
+  statusCode: 400
+  code: ERR12044
+  message: DEREF_CLIENT_NOT_MATCH
+  description: The authenticated client id %s is not matched to the registered dereference client id
+ERR12045:
+  statusCode: 400
+  code: ERR12045
+  message: DEREF_TOKEN_NOT_FOUND
+  description: The reference token %s cannot be found to exchange to JWT
+ERR12046:
+  statusCode: 400
+  code: ERR12046
+  message: JWT_TOKEN_NOT_FOUND
+  description: The jwt token cannot be found to match the reference token %s
+ERR12047:
+  statusCode: 400
+  code: ERR12047
+  message: PROVIDER_ID_NOT_EXISTING
+  description: The provider id is not existing
+ERR12048:
+  statusCode: 400
+  code: ERR12048
+  message: PROVIDER_ID_EXISTS
+  description: Provider id %s exists; It has been regristed already
+ERR12049:
+  statusCode: 400
+  code: ERR12049
+  message: PROVIDER_ID_INVALID
+  description: Provider id invalid
+ERR12050:
+  statusCode: 400
+  code: ERR12050
+  message: FAILED_TO_POPULATE_HEADER
+  description: Failed to populate client credentials scope token in header in method %s
+ERR12051:
+  statusCode: 400
+  code: ERR12051
+  message: HOST_IS_REQUIRED
+  description: Host is required
+
+# Tokenization service
+ERR12100:
+  statusCode: 404
+  code: ERR12100
+  message: SCHEME_NOT_FOUND
+  description: Tokenizer scheme %s not found
+ERR12101:
+  statusCode: 400
+  code: ERR12101
+  message: CLIENT_ID_MISSING
+  description: Client_id is missing, JWT verification needs to be enable in security.yml
+ERR12102:
+  statusCode: 400
+  code: ERR12102
+  message: DATABASE_NOT_FOUND
+  description: Database not found from client_id %s to database mapping table.
+ERR12103:
+  statusCode: 400
+  code: ERR12103
+  message: DATASOURCE_NOT_CONFIGURED
+  description: DataSource %s is not configured in datasource.yml
+ERR12104:
+  statusCode: 400
+  code: ERR12104
+  message: FAIL_TO_QUERY_TOKEN_VAULT
+  description: Fail to query token_vault table in database %s
+ERR12105:
+  statusCode: 400
+  code: ERR12105
+  message: FAIL_TO_INSERT_TOKEN_VAULT
+  description: Fail to insert into token_vault table in database %s
+ERR12106:
+  statusCode: 400
+  code: ERR12106
+  message: FAIL_TO_DELETE_TOKEN_VAULT
+  description: Fail to delete from token_vault table in database %s
+ERR12107:
+  statusCode: 404
+  code: ERR12107
+  message: TOKEN_NOT_FOUND
+  description: Token %s not found in token_vault table in database %s
+ERR12108:
+  statusCode: 400
+  code: ERR12108
+  message: LOGGING_DISABLED
+  description: Logging is disabled in logging.yml
+ERR12109:
+  statusCode: 400
+  code: ERR12109
+  message: LOGGING_LEVEL_NOT_PROVIDED
+  description: Logging level is not provided
+
+# http2client error 13000-14000
+ERR13001:
+  statusCode: 403
+  code: ERR13001
+  message: UNABLE_PARSE_SCOPES_FROM_HEADER
+  description: Cannot parse scopes from request headers.
+
+# 20000-29999 common error codes within your business domain.
+# It is highly recommended to have your error code shared within your organization or your line of business.
+# In that case, all your services can share the same status.yml which in org default config
+
+
+# 90000-99999 customize error code that cannot be found in common range.
+# Only use this section if you cannot make your error code into 20000-29999 range on time.
+# In this case, you have to overwrite your status.yml per service.

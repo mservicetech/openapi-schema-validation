@@ -1,8 +1,10 @@
 package com.mservicetech.openapi.validation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mservicetech.openapi.common.ParameterType;
 import com.mservicetech.openapi.common.RequestEntity;
-import com.networknt.config.Config;
+import com.mservicetech.openapi.common.Status;
 import com.networknt.jsonoverlay.Overlay;
 import com.networknt.oas.model.Operation;
 import com.networknt.oas.model.Parameter;
@@ -10,11 +12,11 @@ import com.networknt.oas.model.Path;
 import com.networknt.oas.model.RequestBody;
 import com.networknt.oas.model.impl.RequestBodyImpl;
 import com.networknt.oas.model.impl.SchemaImpl;
+import com.networknt.openapi.ApiNormalisedPath;
 import com.networknt.openapi.NormalisedPath;
+import com.networknt.openapi.OpenApiHelper;
 import com.networknt.openapi.OpenApiOperation;
-import com.networknt.openapi.parameter.ParameterType;
 import com.networknt.schema.SchemaValidatorsConfig;
-import com.networknt.status.Status;
 
 import com.networknt.utility.StringUtils;
 import org.slf4j.Logger;
@@ -41,6 +43,7 @@ public class OpenApiValidator {
     public String spec;
     public OpenApiHelper openApiHelper;
     public SchemaValidator schemaValidator;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Construct a new request validator with the given schema validator.
@@ -54,8 +57,8 @@ public class OpenApiValidator {
                 throw new IOException("cannot load openapi spec file");
             }
             spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-            openApiHelper = new OpenApiHelper(spec);
-            schemaValidator = new SchemaValidator(openApiHelper.getOpenApi3());
+            openApiHelper = OpenApiHelper.init(spec);
+            schemaValidator = new SchemaValidator(openApiHelper.openApi3);
         } catch (Exception e) {
             logger.error("initial failed:" + e);
         }
@@ -69,8 +72,8 @@ public class OpenApiValidator {
     public OpenApiValidator(String openapiPath) {
         InputStream in = this.getClass().getClassLoader().getResourceAsStream(openapiPath);
         spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-        openApiHelper = new OpenApiHelper(spec);
-        schemaValidator = new SchemaValidator(openApiHelper.getOpenApi3());
+        openApiHelper = OpenApiHelper.init(spec);
+        schemaValidator = new SchemaValidator(openApiHelper.openApi3);
     }
 
     /**
@@ -80,8 +83,8 @@ public class OpenApiValidator {
      */
     public OpenApiValidator(InputStream openapi) {
         spec = new BufferedReader(new InputStreamReader(openapi, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-        openApiHelper = new OpenApiHelper(spec);
-        schemaValidator = new SchemaValidator(openApiHelper.getOpenApi3());
+        openApiHelper = OpenApiHelper.init(spec);
+        schemaValidator = new SchemaValidator(openApiHelper.openApi3);
     }
 
     /**
@@ -93,7 +96,7 @@ public class OpenApiValidator {
      */
     public Status validateRequestPath (String requestURI , String httpMethod, RequestEntity requestEntity ) {
         requireNonNull(openApiHelper, "openApiHelper object cannot be null");
-        final NormalisedPath requestPath = new ApiNormalisedPath(requestURI, openApiHelper.getOpenApi3(), openApiHelper.getBasePath());
+        final NormalisedPath requestPath = new ApiNormalisedPath(requestURI);
         final Optional<NormalisedPath> maybeApiPath = openApiHelper.findMatchingApiPath(requestPath);
         if (!maybeApiPath.isPresent()) {
             Status status = new Status( STATUS_INVALID_REQUEST_PATH, requestPath.normalised());
@@ -101,7 +104,7 @@ public class OpenApiValidator {
         }
 
         final NormalisedPath openApiPathString = maybeApiPath.get();
-        final Path path = openApiHelper.getOpenApi3().getPath(openApiPathString.original());
+        final Path path = openApiHelper.openApi3.getPath(openApiPathString.original());
 
         final Operation operation = path.getOperation(httpMethod.toLowerCase());
         OpenApiOperation openApiOperation = new OpenApiOperation(openApiPathString, path, httpMethod, operation);
@@ -331,10 +334,10 @@ public class OpenApiValidator {
         if (bodyString != null) {
             bodyString = bodyString.trim();
             if (bodyString.startsWith("{")) {
-                body = Config.getInstance().getMapper().readValue(bodyString, new TypeReference<Map<String, Object>>() {
+                body = objectMapper.readValue(bodyString, new TypeReference<Map<String, Object>>() {
                 });
             } else if (bodyString.startsWith("[")) {
-                body = Config.getInstance().getMapper().readValue(bodyString, new TypeReference<List<Object>>() {
+                body = objectMapper.readValue(bodyString, new TypeReference<List<Object>>() {
                 });
             } else {
                 // error here. The content type in head doesn't match the body.

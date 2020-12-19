@@ -2,7 +2,7 @@ package com.mservicetech.openapi.validation;
 
 import com.mservicetech.openapi.common.RequestEntity;
 
-import com.networknt.status.Status;
+import com.mservicetech.openapi.common.Status;
 import org.junit.Assert;
 
 import org.junit.BeforeClass;
@@ -28,7 +28,7 @@ public class OpenApiValidatorTest {
     @Test
     public void testFileLoad() {
 
-        Assert.assertNotNull(openApiValidator.openApiHelper.getOpenApi3());
+        Assert.assertNotNull(openApiValidator.openApiHelper.openApi3);
         Assert.assertNotNull(openApiValidator.openApiHelper.basePath);
     }
 

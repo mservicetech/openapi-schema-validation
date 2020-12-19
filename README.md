@@ -15,6 +15,14 @@ Most API development framework (like spring boot), use the swagger codegen to ge
 
 ## Summary
 
+Different as release version 1.*, the release version 2.0.* reduced the dependency to the light-4j and undertow library. It only depends on the following light-4j library:
+
+ <artifactId>openapi-helper</artifactId>
+ <artifactId>json-overlay</artifactId>
+ <artifactId>openapi-parser</artifactId>
+
+
+
 #### Performance
 
 
@@ -71,7 +79,7 @@ Include the dependency in the project pom:
   <dependency>
     <groupId>com.mservicetech</groupId>
     <artifactId>openapi-schema-validation</artifactId>
-    <version>1.0.2</version>
+    <version>2.0.0</version>
   </dependency>
    ```
 

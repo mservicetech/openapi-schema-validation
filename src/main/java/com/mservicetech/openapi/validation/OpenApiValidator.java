@@ -32,6 +32,7 @@ import static java.util.Objects.requireNonNull;
 public class OpenApiValidator {
     Logger logger = LoggerFactory.getLogger(OpenApiValidator.class);
     final String OPENAPI_YML_CONFIG = "openapi.yml";
+    final String OPENAPI_YAML_CONFIG = "openapi.yaml";
     final String STATUS_INVALID_REQUEST_PATH = "ERR10007";
     final String STATUS_METHOD_NOT_ALLOWED = "ERR10008";
 
@@ -52,9 +53,12 @@ public class OpenApiValidator {
      */
     public OpenApiValidator() {
         try {
-            InputStream in = this.getClass().getClassLoader().getResourceAsStream(OPENAPI_YML_CONFIG);
+            InputStream in = this.getClass().getClassLoader().getResourceAsStream(OPENAPI_YAML_CONFIG);
             if (in == null) {
-                throw new IOException("cannot load openapi spec file");
+                in = this.getClass().getClassLoader().getResourceAsStream(OPENAPI_YML_CONFIG);
+                if (in==null) {
+                    throw new IOException("cannot load openapi spec file");
+                }
             }
             spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
             openApiHelper = OpenApiHelper.init(spec);

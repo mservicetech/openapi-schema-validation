@@ -182,7 +182,8 @@ public class OpenApiValidator {
             return result.getStatus();
         }
         if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
-            return new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original());
+            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_MISSING, p.getName(), openApiOperation.getPathString().original()))
+                    .filter(s->s != null).findFirst().get();
         }
         return null;
     }
@@ -231,7 +232,8 @@ public class OpenApiValidator {
             return result.getStatus();
         }
         if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
-            return new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original());
+            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_MISSING, p.getName(), openApiOperation.getPathString().original()))
+                    .filter(s->s != null).findFirst().get();
         }
         return null;
     }
@@ -260,7 +262,8 @@ public class OpenApiValidator {
             return Optional.ofNullable(result.getStatus());
         }
         if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
-            return Optional.ofNullable(new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original()));
+            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_MISSING, p.getName(), openApiOperation.getPathString().original()))
+                    .filter(s->s != null).findFirst();
         }
         return Optional.ofNullable(null);
     }
@@ -274,7 +277,8 @@ public class OpenApiValidator {
             return Optional.ofNullable(result.getStatus());
         }
         if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
-            return Optional.ofNullable(new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original()));
+            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_MISSING, p.getName(), openApiOperation.getPathString().original()))
+                    .filter(s->s != null).findFirst();
         }
         return Optional.ofNullable(null);
     }
@@ -300,7 +304,8 @@ public class OpenApiValidator {
             return Optional.ofNullable(result.getStatus());
         }
         if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
-            return Optional.ofNullable(new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original()));
+            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_MISSING, p.getName(), openApiOperation.getPathString().original()))
+                    .filter(s->s != null).findFirst();
         }
         return Optional.ofNullable(null);
     }
@@ -314,7 +319,8 @@ public class OpenApiValidator {
             return Optional.ofNullable(result.getStatus());
         }
         if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
-            return Optional.ofNullable(new Status(VALIDATOR_REQUEST_PARAMETER_MISSING,  openApiOperation.getMethod(), openApiOperation.getPathString().original()));
+            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_MISSING, p.getName(), openApiOperation.getPathString().original()))
+                    .filter(s->s != null).findFirst();
         }
         return Optional.ofNullable(null);
     }
@@ -367,7 +373,7 @@ public class OpenApiValidator {
             return statuses.isEmpty()?null:statuses.get(0);
         }
 
-        public List<Status> getAllStatueses(){
+        public List<Status> getAllStatues(){
             return Collections.unmodifiableList(statuses);
         }
     }

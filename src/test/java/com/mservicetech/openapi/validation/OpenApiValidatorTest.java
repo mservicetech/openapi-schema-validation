@@ -132,13 +132,28 @@ public class OpenApiValidatorTest {
     }
 
     @Test
-    public void testRequestQueryMissNotRequired() {
+    public void testRequestQueryMissRequired() {
 
         RequestEntity requestEntity = new RequestEntity();
         Map<String, Object> queryMap = new HashMap<>();
         requestEntity.setQueryParameters(queryMap);
         Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
-        Assert.assertNull(status);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11001");
+       // {"statusCode":400,"code":"ERR11001","message":"VALIDATOR_REQUEST_PARAMETER_MISSING","description":"Parameter limit is required but is missing.","severity":"ERROR"}
+    }
+
+    @Test
+    public void testRequestQueryRequiredWithEmpty() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        requestEntity.setQueryParameters(queryMap);
+        queryMap.put("limit", null);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertEquals( status.getCode(), "ERR11001");
+        //{"statusCode":400,"code":"ERR11001","message":"VALIDATOR_REQUEST_PARAMETER_MISSING","description":"Parameter limit is required but is missing.","severity":"ERROR"}
+        Assert.assertNotNull(status);
     }
 
     @Test
@@ -171,6 +186,7 @@ public class OpenApiValidatorTest {
         RequestEntity requestEntity = new RequestEntity();
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("includeCode", "true");
+        queryMap.put("limit", 12);
         requestEntity.setQueryParameters(queryMap);
         Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
         Assert.assertNull(status);
@@ -182,6 +198,7 @@ public class OpenApiValidatorTest {
         RequestEntity requestEntity = new RequestEntity();
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("includeCode", "yes");
+        queryMap.put("limit", 12);
         requestEntity.setQueryParameters(queryMap);
         Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
         Assert.assertNotNull(status);

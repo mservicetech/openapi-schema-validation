@@ -1,5 +1,8 @@
 package com.mservicetech.openapi.validation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mservicetech.openapi.common.RequestEntity;
 
 import com.mservicetech.openapi.common.Status;
@@ -74,6 +77,21 @@ public class OpenApiValidatorTest {
         String req = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
         RequestEntity requestEntity = new RequestEntity();
         requestEntity.setRequestBody(req);
+        requestEntity.setContentType("application/json");
+        Status status = openApiValidator.validateRequestPath("/pets", "post", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - requestBody.id: string found, integer expected","severity":"ERROR"}
+    }
+
+    @Test
+    public void testRequestBody4() throws JsonProcessingException {
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/req3.json");
+        String req = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+        RequestEntity requestEntity = new RequestEntity();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(req);
+        requestEntity.setRequestBody(jsonNode);
         requestEntity.setContentType("application/json");
         Status status = openApiValidator.validateRequestPath("/pets", "post", requestEntity);
         Assert.assertNotNull(status);

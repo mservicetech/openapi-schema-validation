@@ -3,6 +3,8 @@ package com.mservicetech.openapi.common;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class RequestEntity {
 
     Map<String, ?> pathParameters;
@@ -51,6 +53,10 @@ public class RequestEntity {
 
     public void setRequestBody(String requestBody) {
         this.requestBody = requestBody;
+    }
+
+    public void setRequestBody(JsonNode requestBody) {
+        this.requestBody = requestBody.toPrettyString();
     }
 
     public String getContentType() {

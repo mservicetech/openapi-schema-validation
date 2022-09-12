@@ -61,7 +61,7 @@ public class OpenApiValidator {
                 }
             }
             spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-            openApiHelper = OpenApiHelper.init(spec);
+            openApiHelper = new OpenApiHelper(spec);
             schemaValidator = new SchemaValidator(openApiHelper.openApi3);
         } catch (Exception e) {
             logger.error("initial failed:" + e);
@@ -76,7 +76,7 @@ public class OpenApiValidator {
     public OpenApiValidator(String openapiPath) {
         InputStream in = this.getClass().getClassLoader().getResourceAsStream(openapiPath);
         spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-        openApiHelper = OpenApiHelper.init(spec);
+        openApiHelper = new OpenApiHelper(spec);
         schemaValidator = new SchemaValidator(openApiHelper.openApi3);
     }
 
@@ -87,7 +87,7 @@ public class OpenApiValidator {
      */
     public OpenApiValidator(InputStream openapi) {
         spec = new BufferedReader(new InputStreamReader(openapi, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-        openApiHelper = OpenApiHelper.init(spec);
+        openApiHelper = new OpenApiHelper(spec);
         schemaValidator = new SchemaValidator(openApiHelper.openApi3);
     }
 
@@ -100,7 +100,7 @@ public class OpenApiValidator {
      */
     public Status validateRequestPath (String requestURI , String httpMethod, RequestEntity requestEntity ) {
         requireNonNull(openApiHelper, "openApiHelper object cannot be null");
-        final NormalisedPath requestPath = new ApiNormalisedPath(requestURI);
+        final NormalisedPath requestPath = new ApiNormalisedPath(requestURI, openApiHelper.basePath);
         final Optional<NormalisedPath> maybeApiPath = openApiHelper.findMatchingApiPath(requestPath);
         if (!maybeApiPath.isPresent()) {
             Status status = new Status( STATUS_INVALID_REQUEST_PATH, requestPath.normalised());

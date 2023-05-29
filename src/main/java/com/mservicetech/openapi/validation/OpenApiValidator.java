@@ -63,6 +63,7 @@ public class OpenApiValidator {
             spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
             openApiHelper = new OpenApiHelper(spec);
             schemaValidator = new SchemaValidator(openApiHelper.openApi3);
+            in.close();
         } catch (Exception e) {
             logger.error("initial failed:" + e);
         }
@@ -74,10 +75,14 @@ public class OpenApiValidator {
      * @param openapiPath The schema file name and path to use when validating request bodies
      */
     public OpenApiValidator(String openapiPath) {
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream(openapiPath);
-        spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-        openApiHelper = new OpenApiHelper(spec);
-        schemaValidator = new SchemaValidator(openApiHelper.openApi3);
+        try (InputStream in = this.getClass().getClassLoader().getResourceAsStream(openapiPath);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+            spec = reader.lines().collect(Collectors.joining("\n"));
+            openApiHelper = new OpenApiHelper(spec);
+            schemaValidator = new SchemaValidator(openApiHelper.openApi3);
+        } catch (IOException e) {
+            logger.error("initial failed:" + e);
+        }
     }
 
     /**

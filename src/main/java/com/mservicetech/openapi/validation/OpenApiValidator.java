@@ -52,19 +52,28 @@ public class OpenApiValidator {
      * The default construct will try to load openapi.yml file from classpath
      */
     public OpenApiValidator() {
+        InputStream in  = this.getClass().getClassLoader().getResourceAsStream(OPENAPI_YAML_CONFIG);;
         try {
-            InputStream in = this.getClass().getClassLoader().getResourceAsStream(OPENAPI_YAML_CONFIG);
             if (in == null) {
                 in = this.getClass().getClassLoader().getResourceAsStream(OPENAPI_YML_CONFIG);
                 if (in==null) {
-                    throw new IOException("cannot load openapi spec file");
+                    throw new IOException("Cannot load openapi spec file");
                 }
             }
             spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
             openApiHelper = new OpenApiHelper(spec);
             schemaValidator = new SchemaValidator(openApiHelper.openApi3);
-        } catch (Exception e) {
-            logger.error("initial failed:" + e);
+        } catch (IOException e) {
+            logger.error("Initial failed:" + e);
+        }
+        finally {
+            try {
+                if( in!=null ) {
+                    in.close();
+                }
+            } catch(IOException e) {
+                logger.error(" Failed to close input stream:" + e);
+            }
         }
     }
 
@@ -74,10 +83,14 @@ public class OpenApiValidator {
      * @param openapiPath The schema file name and path to use when validating request bodies
      */
     public OpenApiValidator(String openapiPath) {
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream(openapiPath);
-        spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-        openApiHelper = new OpenApiHelper(spec);
-        schemaValidator = new SchemaValidator(openApiHelper.openApi3);
+        try (InputStream in = this.getClass().getClassLoader().getResourceAsStream(openapiPath);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+            spec = reader.lines().collect(Collectors.joining("\n"));
+            openApiHelper = new OpenApiHelper(spec);
+            schemaValidator = new SchemaValidator(openApiHelper.openApi3);
+        } catch (IOException e) {
+            logger.error("initial failed:" + e);
+        }
     }
 
     /**

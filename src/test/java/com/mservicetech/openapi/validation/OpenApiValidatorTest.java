@@ -100,6 +100,32 @@ public class OpenApiValidatorTest {
     }
 
     @Test
+    public void testRequestBodyEmpty() {
+        String req = "";
+        RequestEntity requestEntity = new RequestEntity();
+        requestEntity.setRequestBody(req);
+        requestEntity.setContentType("application/json");
+        Status status = openApiValidator.validateRequestPath("/pets", "post", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11013");
+        System.out.println(status.getDescription());
+        //{"statusCode":400,"code":"ERR11013","message":"VALIDATOR_REQUEST_BODY_UNEXPECTED","No request body is expected for %s on path %s.":"ERROR"}
+    }
+
+    @Test
+    public void testRequestBodyNull() {
+        String req = null;
+        RequestEntity requestEntity = new RequestEntity();
+        requestEntity.setRequestBody(req);
+        requestEntity.setContentType("application/json");
+        Status status = openApiValidator.validateRequestPath("/pets", "post", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11014");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_REQUEST_BODY_MISSING","description":"Method post on path /pets requires a request body. None found.","severity":"ERROR"}
+    }
+
+
+    @Test
     public void testRequestPath() {
 
         RequestEntity requestEntity = new RequestEntity();

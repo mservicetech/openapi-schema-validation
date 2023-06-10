@@ -137,9 +137,10 @@ public class OpenApiValidator {
             if ((requestEntity.getContentType()==null || requestEntity.getContentType().startsWith("application/json"))) {
                 try {
                     Object body = attachJsonBody(requestEntity.getRequestBody());
-                    if (body!=null) {
-                        status = validateRequestBody(body, openApiOperation);
-                    }
+                    status = validateRequestBody(body, openApiOperation);
+//                    if (body!=null) {
+//                        status = validateRequestBody(body, openApiOperation);
+//                    } 
                 } catch (Exception e) {
                      status = new Status( VALIDATOR_REQUEST_BODY_UNEXPECTED, requestPath.normalised());
                 }

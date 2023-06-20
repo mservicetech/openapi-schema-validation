@@ -433,7 +433,7 @@ ERR11000:
   statusCode: 400
   code: ERR11000
   message: VALIDATOR_REQUEST_PARAMETER_QUERY_MISSING
-  description: Query parameter %s is required on path %s but not found in request.
+  description: Query parameter %s is required, but not found in request.
 ERR11001:
   statusCode: 400
   code: ERR11001
@@ -518,7 +518,7 @@ ERR11017:
   statusCode: 400
   code: ERR11017
   message: VALIDATOR_REQUEST_PARAMETER_HEADER_MISSING
-  description: Header parameter %s is required but missing.
+  description: Header parameter %s is required, but not found in request.
 ERR11018:
   statusCode: 400
   code: ERR11018

@@ -518,7 +518,7 @@ ERR11017:
   statusCode: 400
   code: ERR11017
   message: VALIDATOR_REQUEST_PARAMETER_HEADER_MISSING
-  description: Header parameter %s is required on path %s but not found in request.
+  description: Header parameter %s is required but missing.
 ERR11018:
   statusCode: 400
   code: ERR11018

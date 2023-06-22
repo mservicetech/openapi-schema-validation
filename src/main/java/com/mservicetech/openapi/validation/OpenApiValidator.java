@@ -41,6 +41,11 @@ public class OpenApiValidator {
     final String VALIDATOR_REQUEST_PARAMETER_MISSING = "ERR11001";
 
 
+    final String VALIDATOR_REQUEST_PARAMETER_PATH_MISSING = "ERR11108";
+    final String VALIDATOR_REQUEST_PARAMETER_HEADER_MISSING = "ERR11017";
+    final String VALIDATOR_REQUEST_PARAMETER_QUERY_MISSING = "ERR11000";
+
+
     public String spec;
     public OpenApiHelper openApiHelper;
     public SchemaValidator schemaValidator;
@@ -203,7 +208,7 @@ public class OpenApiValidator {
             return result.getStatus();
         }
         if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
-            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_MISSING, p.getName(), openApiOperation.getPathString().original()))
+            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_PATH_MISSING, p.getName(), openApiOperation.getPathString().original()))
                     .filter(s->s != null).findFirst().get();
         }
         return null;
@@ -253,7 +258,7 @@ public class OpenApiValidator {
             return result.getStatus();
         }
         if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
-            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_MISSING, p.getName(), openApiOperation.getPathString().original()))
+            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_QUERY_MISSING, p.getName(), openApiOperation.getPathString().original()))
                     .filter(s->s != null).findFirst().get();
         }
         return null;
@@ -281,7 +286,7 @@ public class OpenApiValidator {
             return Optional.ofNullable(result.getStatus());
         }
         if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
-            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_MISSING, p.getName(), openApiOperation.getPathString().original()))
+            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_HEADER_MISSING, p.getName(), openApiOperation.getPathString().original()))
                     .filter(s->s != null).findFirst();
         }
         return Optional.ofNullable(null);
@@ -296,7 +301,7 @@ public class OpenApiValidator {
             return Optional.ofNullable(result.getStatus());
         }
         if  (result.skippedParameters!=null && !result.skippedParameters.isEmpty()) {
-            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_MISSING, p.getName(), openApiOperation.getPathString().original()))
+            return result.skippedParameters.stream().map(p-> new Status (VALIDATOR_REQUEST_PARAMETER_HEADER_MISSING, p.getName(), openApiOperation.getPathString().original()))
                     .filter(s->s != null).findFirst();
         }
         return Optional.ofNullable(null);

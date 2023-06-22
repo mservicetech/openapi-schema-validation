@@ -433,7 +433,7 @@ ERR11000:
   statusCode: 400
   code: ERR11000
   message: VALIDATOR_REQUEST_PARAMETER_QUERY_MISSING
-  description: Query parameter %s is required on path %s but not found in request.
+  description: Query parameter %s is required, but not found in request.
 ERR11001:
   statusCode: 400
   code: ERR11001
@@ -518,7 +518,7 @@ ERR11017:
   statusCode: 400
   code: ERR11017
   message: VALIDATOR_REQUEST_PARAMETER_HEADER_MISSING
-  description: Header parameter %s is required on path %s but not found in request.
+  description: Header parameter %s is required, but not found in request.
 ERR11018:
   statusCode: 400
   code: ERR11018
@@ -566,7 +566,11 @@ ERR11107:
   code: ERR11107
   message: COMPRESSION_EXCEPTION
   description: Exception occurs during compression %s.
-
+ERR11108:
+  statusCode: 400
+  code: ERR11108
+  message: VALIDATOR_REQUEST_PARAMETER_PATH_MISSING
+  description: Path parameter %s is required on path %s but not found in request.
 
 # 11200 - 11299 light hybrid validation errors
 ERR11200:

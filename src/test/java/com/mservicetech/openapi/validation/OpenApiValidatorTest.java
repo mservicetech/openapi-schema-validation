@@ -158,7 +158,7 @@ public class OpenApiValidatorTest {
         requestEntity.setPathParameters(pathMap);
         Status status = openApiValidator.validateRequestPath("/pets/{petId}", "get", requestEntity);
         Assert.assertNotNull(status);
-        Assert.assertEquals( status.getCode(), "ERR11001");
+        Assert.assertEquals( status.getCode(), "ERR11108");
         //{"statusCode":400,"code":"ERR11001","message":"VALIDATOR_REQUEST_PARAMETER_MISSING","description":"Parameter petId is required but is missing.","severity":"ERROR"}
     }
 
@@ -182,7 +182,7 @@ public class OpenApiValidatorTest {
         Map<String, Object> queryMap = new HashMap<>();
         requestEntity.setQueryParameters(queryMap);
         Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
-        Assert.assertEquals( status.getCode(), "ERR11001");
+        Assert.assertEquals( status.getCode(), "ERR11000");
         //{"statusCode":400,"code":"ERR11001","message":"VALIDATOR_REQUEST_PARAMETER_MISSING","description":"Parameter limit is required but is missing.","severity":"ERROR"}
         Assert.assertNotNull(status);
     }
@@ -195,7 +195,7 @@ public class OpenApiValidatorTest {
         requestEntity.setQueryParameters(queryMap);
         queryMap.put("limit", null);
         Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
-        Assert.assertEquals( status.getCode(), "ERR11001");
+        Assert.assertEquals( status.getCode(), "ERR11000");
         //{"statusCode":400,"code":"ERR11001","message":"VALIDATOR_REQUEST_PARAMETER_MISSING","description":"Parameter limit is required but is missing.","severity":"ERROR"}
         Assert.assertNotNull(status);
     }

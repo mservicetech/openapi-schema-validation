@@ -38,6 +38,10 @@ paths:
               description: A link to the next page of responses
               schema:
                 type: string
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
           content:
             application/json:
               schema:

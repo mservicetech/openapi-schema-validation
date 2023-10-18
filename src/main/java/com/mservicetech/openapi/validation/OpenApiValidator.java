@@ -225,7 +225,7 @@ public class OpenApiValidator {
         parameters.stream()
                 .filter(p -> ParameterType.is(p.getIn(), type))
                 .forEach(p->{
-                    Object deserializedValue = getDeserializedValue(requestEntity, p.getName(), type);
+                    Object deserializedValue = getDeserializedValue(requestEntity, p, type);
                     if (null==deserializedValue ) {
                         if (p.getRequired()) {
                             validationResult.addSkipped(p);
@@ -239,11 +239,45 @@ public class OpenApiValidator {
         return validationResult;
     }
 
-    private Object getDeserializedValue(final RequestEntity requestEntity, final String name, final ParameterType type) {
+    private Object getDeserializedValue(final RequestEntity requestEntity, final Parameter parameter, final ParameterType type) {
+        String name = parameter.getName();
         if (null!=type && StringUtils.isNotBlank(name)) {
             switch(type){
                 case QUERY:
-                    return requestEntity.getQueryParameters()==null? null:requestEntity.getQueryParameters().get(name);
+                    if (requestEntity.getQueryParameters() == null) return null;
+                    Object param = requestEntity.getQueryParameters().get(name);
+                    String schemaType = parameter.getSchema() == null ? null : parameter.getSchema().getType();
+                    if (schemaType != null && List.of("array", "object").contains(schemaType) && !parameter.isExplode() && param instanceof String) {
+                        String style = parameter.getStyle() == null ? "form" : parameter.getStyle();
+                        String delimiter;
+                        switch (style) {
+                        case "form":
+                            delimiter = ",";
+                            break;
+                        case "spaceDelimited":
+                            delimiter = " ";
+                            break;
+                        case "pipeDelimited":
+                            delimiter = "\\|";
+                            break;
+                        default:
+                            return param;
+                        }
+
+                        // Convert string to array
+                        param = ((String)param).split(delimiter, -1);
+
+                        if (schemaType.equals("object")) {
+                            // Convert array to object
+                            Map<String, String> obj = new HashMap<>();
+                            int length = ((String[])param).length;
+                            for (int i = 0; i < length; i += 2) {
+                                obj.put(((String[])param)[i], i + 1 == length ? "" : ((String[])param)[i + 1]);
+                            }
+                            param = obj;
+                        }
+                    }
+                    return param;
                 case PATH:
                     return requestEntity.getPathParameters()==null?null:requestEntity.getPathParameters().get(name);
                 case HEADER:

@@ -27,6 +27,55 @@ paths:
           required: false
           schema:
             type: boolean
+        - name: names
+          in: query
+          description: Comma separated list of pet names
+          required: false
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+              minLength: 1
+              maxLength: 10
+        - name: spaceDelimitedNames
+          in: query
+          description: Space delimited list of pet names
+          required: false
+          style: spaceDelimited
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+              minLength: 1
+              maxLength: 10
+        - name: pipeDelimitedNames
+          in: query
+          description: Pipe delimited list of pet names
+          required: false
+          style: pipeDelimited
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+              minLength: 1
+              maxLength: 10
+        - name: search
+          in: query
+          description: Comma separated list of search keys and values
+          required: false
+          explode: false
+          schema:
+            type: object
+            properties:
+              tag:
+                type: string
+              name:
+                type: string
+                minLength: 1
+                maxLength: 10
       security:
         - petstore_auth:
             - 'read:pets'

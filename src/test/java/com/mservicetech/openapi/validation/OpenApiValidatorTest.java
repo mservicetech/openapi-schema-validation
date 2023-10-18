@@ -252,6 +252,124 @@ public class OpenApiValidatorTest {
     }
 
     @Test
+    public void testRequestQueryFormArray() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        queryMap.put("names", "Max,Luna,Nemo");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testRequestQueryFormArrayWithError() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        queryMap.put("names", "Maximillian,Luna");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - names[0]: may only be 10 characters long","severity":"ERROR"}
+    }
+
+    @Test
+    public void testRequestQuerySpaceDelimitedArray() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        queryMap.put("spaceDelimitedNames", "Max Luna Nemo");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testRequestQuerySpaceDelimitedArrayWithError() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        queryMap.put("spaceDelimitedNames", "Max,Luna,Nemo");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - spaceDelimitedNames[0]: may only be 10 characters long","severity":"ERROR"}
+    }
+
+    @Test
+    public void testRequestQueryPipeDelimitedArray() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        queryMap.put("pipeDelimitedNames", "Max|Luna|Nemo");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testRequestQueryPipeDelimitedArrayWithError() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        queryMap.put("pipeDelimitedNames", "Max,Luna,Nemo");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - pipeDelimitedNames[0]: may only be 10 characters long","severity":"ERROR"}
+    }
+
+    @Test
+    public void testRequestQueryFormObject() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        queryMap.put("search", "tag,cat,name,Luna");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testRequestQueryFormObjectWithError() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        queryMap.put("search", "tag,cat,name,Lunatikitten");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - search.name: may only be 10 characters long","severity":"ERROR"}
+    }
+
+    @Test
+    public void testRequestQueryFormObjectWithErrorMissingValue() {
+
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        queryMap.put("search", "tag,cat,name");
+        requestEntity.setQueryParameters(queryMap);
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals( status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - search.name: must be at least 1 characters long","severity":"ERROR"}
+    }
+
+    @Test
     public void testResponseBody() {
         InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/req1.json");
         String res = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));

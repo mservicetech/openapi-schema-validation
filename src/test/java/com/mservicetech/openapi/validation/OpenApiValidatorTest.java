@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mservicetech.openapi.common.RequestEntity;
+import com.mservicetech.openapi.common.ResponseEntity;
 
 import com.mservicetech.openapi.common.Status;
 import org.junit.Assert;
@@ -249,4 +250,139 @@ public class OpenApiValidatorTest {
         Assert.assertEquals( status.getCode(), "ERR11004");
         //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - includeCode: string found, boolean expected","severity":"ERROR"}
     }
+
+    @Test
+    public void testResponseBody() {
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/req1.json");
+        String res = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        responseEntity.setContentType("application/json");
+        responseEntity.setContent(res);
+        Status status = openApiValidator.validateResponsePath("/pets/1222", "get", "200", responseEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testResponseBody2() {
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/req2.json");
+        String res = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        responseEntity.setContentType("application/json");
+        responseEntity.setContent(res);
+        Status status = openApiValidator.validateResponsePath("/pets/1222", "get", "200", responseEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - requestBody.id: is missing but it is required","severity":"ERROR"}
+    }
+
+    @Test
+    public void testResponseBody3() {
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/req3.json");
+        String res = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        responseEntity.setContentType("application/json");
+        responseEntity.setContent(res);
+        Status status = openApiValidator.validateResponsePath("/pets/1222", "get", "200", responseEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - requestBody.id: string found, integer expected","severity":"ERROR"}
+    }
+
+    @Test
+    public void testResponseBody4() throws JsonProcessingException {
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/req3.json");
+        String res = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(res);
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        responseEntity.setContentType("application/json");
+        responseEntity.setContent(jsonNode);
+        Status status = openApiValidator.validateResponsePath("/pets/1222", "get", "200", responseEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status.getCode(), "ERR11004");
+        //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - requestBody.id: string found, integer expected","severity":"ERROR"}
+    }
+
+    @Test
+    public void testResponseBodyEmpty() {
+        String res = "";
+        Status status;
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        responseEntity.setContentType("application/json");
+        responseEntity.setContent(res);
+        status = openApiValidator.validateResponsePath("/pets", "post", "201", responseEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status.getCode(), "ERR11018");
+        // {"statusCode":400,"code":"ERR11018","message":"VALIDATOR_RESPONSE_CONTENT_UNEXPECTED","description":"No response body content or schema is expected for get on path /pets/{petId}.","severity":"ERROR"}
+        status = openApiValidator.validateResponsePath("/pets/1222", "get", "200", responseEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status.getCode(), "ERR11018");
+        // {"statusCode":400,"code":"ERR11018","message":"VALIDATOR_RESPONSE_CONTENT_UNEXPECTED","description":"No response body content or schema is expected for get on path /pets/{petId}.","severity":"ERROR"}
+    }
+
+    @Test
+    public void testResponseBodyNull() {
+        String res = null;
+        Status status;
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        responseEntity.setContentType("application/json");
+        responseEntity.setContent(res);
+        status = openApiValidator.validateResponsePath("/pets", "post", "201", responseEntity);
+        Assert.assertNull(status);
+        status = openApiValidator.validateResponsePath("/pets/1222", "get", "200", responseEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status.getCode(), "ERR11018");
+        // {"statusCode":400,"code":"ERR11018","message":"VALIDATOR_RESPONSE_CONTENT_UNEXPECTED","description":"No response body content or schema is expected for get on path /pets/{petId}.","severity":"ERROR"}
+    }
+
+    @Test
+    public void testResponsePath() {
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/req1.json");
+        String res = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        responseEntity.setContentType("application/json");
+        responseEntity.setContent(res);
+        Status status = openApiValidator.validateResponsePath("/pets/{petId}", "get", "200", responseEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testResponseHeader() {
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/res1.json");
+        String res = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        Map<String, Object> headerMap = new HashMap<>();
+        headerMap.put("x-next", "http://www.example.com");
+        responseEntity.setHeaders(headerMap);
+        responseEntity.setContentType("application/json");
+        responseEntity.setContent(res);
+        Status status = openApiValidator.validateResponsePath("/pets", "get", "200", responseEntity);
+        Assert.assertNull(status);
+    }
+
+    @Test
+    public void testResponseHeader2() {
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/res1.json");
+        String res = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        Map<String, Object> headerMap = new HashMap<>();
+        headerMap.put("x-rate-limit", "http://www.example.com");
+        responseEntity.setHeaders(headerMap);
+        responseEntity.setContentType("application/json");
+        responseEntity.setContent(res);
+        Status status = openApiValidator.validateResponsePath("/pets", "get", "200", responseEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status.getCode(), "ERR11004");
+        // {"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - $: string found, integer expected","severity":"ERROR"}
+    }
+
 }

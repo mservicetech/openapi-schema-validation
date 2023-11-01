@@ -123,4 +123,17 @@ It will use the input stream as openapi specification
   Status status = openApiValidator.validateRequestPath("/pets", "post", requestEntity);
   
   If the request is valid against the openapi spec, the result will be null. Otherwise, the result will be Status object, which include error code and error message
-  
+
+### Validate response:
+
+If so desired, responses can be validated in a similar fashion:
+
+ResponseEntity responseEntity = new ResponseEntity();
+
+```java
+    Map<String, ?> headers;
+    String content;
+    String contentType;
+```
+
+Status status = openApiValidator.validateResponsePath("/pets", "post", "200", responseEntity);

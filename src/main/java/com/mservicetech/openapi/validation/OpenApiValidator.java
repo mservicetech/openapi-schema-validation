@@ -41,6 +41,7 @@ public class OpenApiValidator {
     final String OPENAPI_YAML_CONFIG = "openapi.yaml";
     final String STATUS_INVALID_REQUEST_PATH = "ERR10007";
     final String STATUS_METHOD_NOT_ALLOWED = "ERR10008";
+    final String STATUS_CONTENT_TYPE_MISMATCH = "ERR10015";
 
     final String VALIDATOR_REQUEST_BODY_UNEXPECTED = "ERR11013";
     final String VALIDATOR_REQUEST_BODY_MISSING = "ERR11014";
@@ -152,10 +153,8 @@ public class OpenApiValidator {
 //                        status = validateRequestBody(body, openApiOperation);
 //                    } 
                 } catch (Exception e) {
-                     status = new Status( VALIDATOR_REQUEST_BODY_UNEXPECTED, requestPath.normalised());
+                    status = new Status(STATUS_CONTENT_TYPE_MISMATCH, "application/json");
                 }
-
-
             }
             return status;
         }

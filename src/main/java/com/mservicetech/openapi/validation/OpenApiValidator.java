@@ -227,7 +227,7 @@ public class OpenApiValidator {
                 .forEach(p->{
                     Object deserializedValue = getDeserializedValue(requestEntity, p.getName(), type);
                     if (null==deserializedValue ) {
-                        if (p.getRequired()) {
+                        if (p.getRequired() != null && p.getRequired()) {
                             validationResult.addSkipped(p);
                         }
                     }else {

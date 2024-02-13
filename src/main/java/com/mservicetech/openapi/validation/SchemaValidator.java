@@ -117,7 +117,7 @@ public class SchemaValidator {
             }
             JsonSchema jsonSchema = JsonSchemaFactory.getInstance().getSchema(schema, config);
             final JsonNode content = objectMapper.valueToTree(value);
-            processingReport = jsonSchema.validate(content, content, at);
+            processingReport = jsonSchema.validate(jsonSchema.createExecutionContext(), content, content, at);
         } catch (Exception e) {
             e.printStackTrace();
         }

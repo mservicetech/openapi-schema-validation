@@ -22,6 +22,7 @@ import com.networknt.openapi.ApiNormalisedPath;
 import com.networknt.openapi.NormalisedPath;
 import com.networknt.openapi.OpenApiHelper;
 import com.networknt.openapi.OpenApiOperation;
+import com.networknt.schema.JsonNodePath;
 import com.networknt.schema.SchemaValidatorsConfig;
 
 import com.networknt.utility.StringUtils;
@@ -187,7 +188,7 @@ public class OpenApiValidator {
         config.setTypeLoose(false);
         config.setHandleNullableField(true);
 
-        return schemaValidator.validate(requestBody, Overlay.toJson((SchemaImpl)specBody.getContentMediaType("application/json").getSchema()), config, "requestBody");
+        return schemaValidator.validate(requestBody, Overlay.toJson((SchemaImpl)specBody.getContentMediaType("application/json").getSchema()), config);
     }
 
     protected Status validateRequestParameters(final RequestEntity requestEntity, final NormalisedPath requestPath, final OpenApiOperation openApiOperation) {
@@ -221,6 +222,8 @@ public class OpenApiValidator {
 
     private ValidationResult validateDeserializedValues(final RequestEntity requestEntity, final Collection<Parameter> parameters, final ParameterType type) {
         ValidationResult validationResult = new ValidationResult();
+        SchemaValidatorsConfig config = new SchemaValidatorsConfig();
+        config.setTypeLoose(true);
 
         parameters.stream()
                 .filter(p -> ParameterType.is(p.getIn(), type))
@@ -230,8 +233,9 @@ public class OpenApiValidator {
                         if (p.getRequired()) {
                             validationResult.addSkipped(p);
                         }
-                    }else {
-                        Status s = schemaValidator.validate(deserializedValue, Overlay.toJson((SchemaImpl)(p.getSchema())), p.getName());
+                    } else {
+                        JsonNodePath instanceLocation = new JsonNodePath(config.getPathType()).append(p.getName());
+                        Status s = schemaValidator.validate(deserializedValue, Overlay.toJson((SchemaImpl)(p.getSchema())), config, instanceLocation);
                         validationResult.addStatus(s);
                     }
                 });

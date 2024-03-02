@@ -79,7 +79,7 @@ Include the dependency in the project pom:
   <dependency>
     <groupId>com.mservicetech</groupId>
     <artifactId>openapi-schema-validation</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.9</version>
   </dependency>
    ```
 

@@ -93,7 +93,7 @@ public class SchemaValidator {
      * @param value The value to validate
      * @param schema The property schema to validate the value against
      * @param config The config model for some validator
-     * @param at The name of the property being validated
+     * @param instanceLocation The instance location
      * @return Status object
      */
     public Status validate(final Object value, final JsonNode schema, SchemaValidatorsConfig config, JsonNodePath instanceLocation) {

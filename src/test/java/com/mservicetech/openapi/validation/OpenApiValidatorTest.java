@@ -108,9 +108,9 @@ public class OpenApiValidatorTest {
         requestEntity.setContentType("application/json");
         Status status = openApiValidator.validateRequestPath("/pets", "post", requestEntity);
         Assert.assertNotNull(status);
-        Assert.assertEquals( status.getCode(), "ERR11013");
+        Assert.assertEquals( status.getCode(), "ERR10015");
         System.out.println(status.getDescription());
-        //{"statusCode":400,"code":"ERR11013","message":"VALIDATOR_REQUEST_BODY_UNEXPECTED","No request body is expected for %s on path %s.":"ERROR"}
+        //{"statusCode":400,"code":"ERR10015","message":"CONTENT_TYPE_MISMATCH","description":"Either the Content-Type header application/json does not match the body, or the body was serialized incorrectly.","severity":"ERROR"}
     }
 
     @Test

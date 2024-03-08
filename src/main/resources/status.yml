@@ -166,7 +166,7 @@ ERR10008:
   statusCode: 405
   code: ERR10008
   message: METHOD_NOT_ALLOWED
-  description: Request method cannot be found in the spec.
+  description: Request method %s cannot be found in the path %s.
 ERR10009:
   statusCode: 408
   code: ERR10009
@@ -366,7 +366,7 @@ ERR10048:
   statusCode: 404
   code: ERR10048
   message: PATH_NOT_IMPLEMENTED
-  description: No handler defined for path '%s'
+  description: No handler defined for path '%s' and method %s
 ERR10049:
   statusCode: 403
   code: ERR10049
@@ -433,7 +433,7 @@ ERR11000:
   statusCode: 400
   code: ERR11000
   message: VALIDATOR_REQUEST_PARAMETER_QUERY_MISSING
-  description: Query parameter %s is required, but not found in request.
+  description: Query parameter %s is required on path %s but not found in request.
 ERR11001:
   statusCode: 400
   code: ERR11001
@@ -505,12 +505,12 @@ ERR11014:
   message: VALIDATOR_REQUEST_BODY_MISSING
   description: Method %s on path %s requires a request body. None found.
 ERR11015:
-  statusCode: 400
+  statusCode: 500
   code: ERR11015
   message: VALIDATOR_RESPONSE_STATUS_UNKNOWN
   description: Response status %d not defined for path %s.
 ERR11016:
-  statusCode: 400
+  statusCode: 500
   code: ERR11016
   message: VALIDATOR_RESPONSE_BODY_MISSING
   description: Method %s on path %s defines a response schema but no response body found.
@@ -518,12 +518,22 @@ ERR11017:
   statusCode: 400
   code: ERR11017
   message: VALIDATOR_REQUEST_PARAMETER_HEADER_MISSING
-  description: Header parameter %s is required, but not found in request.
+  description: Header parameter %s is required on path %s but not found in request.
 ERR11018:
-  statusCode: 400
+  statusCode: 500
   code: ERR11018
   message: VALIDATOR_RESPONSE_CONTENT_UNEXPECTED
   description: No response body content or schema is expected for %s on path %s.
+ERR11019:
+  statusCode: 400
+  code: ERR11019
+  message: STARTUP_HOOK_NOT_LOADED
+  description: Startup hook %s is not loaded properly.
+ERR11020:
+  statusCode: 500
+  code: ERR11020
+  message: VALIDATOR_RESPONSE_HEADER_MISSING
+  description: Response header %s is required on path %s but is not found.
 
 # 11100-11199 Light Code Generator validation errors
 ERR11100:

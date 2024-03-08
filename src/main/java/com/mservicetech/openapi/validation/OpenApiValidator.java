@@ -54,7 +54,7 @@ public class OpenApiValidator {
     final String VALIDATOR_REQUEST_PARAMETER_QUERY_MISSING = "ERR11000";
 
     final String VALIDATOR_RESPONSE_CONTENT_UNEXPECTED = "ERR11018";
-    final String REQUIRED_RESPONSE_HEADER_MISSING = "ERR11019";
+    final String VALIDATOR_RESPONSE_HEADER_MISSING = "ERR11020";
 
     final String DEFAULT_STATUS_CODE = "default";
 
@@ -139,7 +139,7 @@ public class OpenApiValidator {
             }
         } catch (NullPointerException e) {
             // This exception is thrown from within the OpenApiOperation constructor on operation == null.
-            return new Status(STATUS_METHOD_NOT_ALLOWED, requestURI);
+            return new Status(STATUS_METHOD_NOT_ALLOWED, httpMethod, requestURI);
         }
 
         if (requestEntity!=null) {
@@ -446,7 +446,7 @@ public class OpenApiValidator {
             }
         } catch (NullPointerException e) {
             // This exception is thrown from within the OpenApiOperation constructor on operation == null.
-            return new Status(STATUS_METHOD_NOT_ALLOWED, requestURI);
+            return new Status(STATUS_METHOD_NOT_ALLOWED, httpMethod, requestURI);
         }
         Status status = validateHeaders(responseEntity.getHeaders(), openApiOperation, statusCode);
         if(status != null) return status;
@@ -462,7 +462,7 @@ public class OpenApiValidator {
                     //based on OpenAPI specification, ignore "Content-Type" header
                     //If a response header is defined with the name "Content-Type", it SHALL be ignored. - https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#responseObject
                     .filter(entry -> !"Content-Type".equalsIgnoreCase(entry.getKey()))
-                    .map(p -> validateHeader(headers, p.getKey(), p.getValue()))
+                    .map(p -> validateHeader(headers, p.getKey(), p.getValue(), operation))
                     .filter(s -> s != null)
                     .findFirst();
             if(optional.isPresent()) {
@@ -472,7 +472,7 @@ public class OpenApiValidator {
         return null;
     }
 
-    private Status validateHeader(Map<String, ?> headers, String headerName, Header operationHeader) {
+    private Status validateHeader(Map<String, ?> headers, String headerName, Header operationHeader, OpenApiOperation openApiOperation) {
         // According to RFC7230, header field names are case-insensitive.
         Optional<Object> headerValue = Optional.ofNullable(headers).flatMap(opt -> opt.entrySet()
                 .stream()
@@ -482,7 +482,7 @@ public class OpenApiValidator {
         );
         if (headerValue.isEmpty()) {
             if (Boolean.TRUE.equals(operationHeader.getRequired())) {
-                return new Status(REQUIRED_RESPONSE_HEADER_MISSING, headerName);
+                return new Status(VALIDATOR_RESPONSE_HEADER_MISSING, headerName, openApiOperation.getPathString().original());
             }
         } else {
             SchemaValidatorsConfig config = new SchemaValidatorsConfig();

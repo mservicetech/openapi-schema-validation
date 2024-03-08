@@ -133,7 +133,7 @@ public class OpenApiValidator {
         requireNonNull(openApiHelper, "openApiHelper object cannot be null");
         OpenApiOperation openApiOperation;
         try {
-            openApiOperation = getOpenApiOperation(requestURI, httpMethod);
+            openApiOperation = getOpenApiOperation(requestURI, httpMethod.toLowerCase());
             if (openApiOperation == null) {
                 return new Status(STATUS_INVALID_REQUEST_PATH, requestURI);
             }
@@ -440,7 +440,7 @@ public class OpenApiValidator {
     public Status validateResponsePath(String requestURI, String httpMethod, String statusCode, ResponseEntity responseEntity) {
         OpenApiOperation openApiOperation;
         try {
-            openApiOperation = getOpenApiOperation(requestURI, httpMethod);
+            openApiOperation = getOpenApiOperation(requestURI, httpMethod.toLowerCase());
             if (openApiOperation == null) {
                 return new Status(STATUS_INVALID_REQUEST_PATH, requestURI);
             }

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mservicetech.openapi.common.RequestEntity;
 import com.mservicetech.openapi.common.ResponseEntity;
 
-import com.mservicetech.openapi.common.Status;
+import com.networknt.status.Status;
 import org.junit.Assert;
 
 import org.junit.BeforeClass;

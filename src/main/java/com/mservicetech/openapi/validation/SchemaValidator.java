@@ -28,7 +28,7 @@ import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SchemaValidatorsConfig;
 import com.networknt.schema.ValidationMessage;
 import com.networknt.schema.SpecVersion.VersionFlag;
-import com.mservicetech.openapi.common.Status;
+import com.networknt.status.Status;
 
 import java.util.Set;
 

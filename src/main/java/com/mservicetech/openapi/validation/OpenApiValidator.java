@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mservicetech.openapi.common.ParameterType;
 import com.mservicetech.openapi.common.RequestEntity;
 import com.mservicetech.openapi.common.ResponseEntity;
-import com.mservicetech.openapi.common.Status;
+import com.networknt.config.Config;
 import com.networknt.jsonoverlay.Overlay;
 import com.networknt.oas.model.Header;
 import com.networknt.oas.model.MediaType;
@@ -25,6 +25,7 @@ import com.networknt.openapi.OpenApiOperation;
 import com.networknt.schema.JsonNodePath;
 import com.networknt.schema.SchemaValidatorsConfig;
 
+import com.networknt.status.Status;
 import com.networknt.utility.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,12 +71,19 @@ public class OpenApiValidator {
      * The default construct will try to load openapi.yml file from classpath
      */
     public OpenApiValidator() {
-        InputStream in  = this.getClass().getClassLoader().getResourceAsStream(OPENAPI_YAML_CONFIG);;
+        InputStream in = null;
         try {
+            in  = this.getClass().getClassLoader().getResourceAsStream(OPENAPI_YAML_CONFIG);;
             if (in == null) {
                 in = this.getClass().getClassLoader().getResourceAsStream(OPENAPI_YML_CONFIG);
                 if (in==null) {
-                    throw new IOException("Cannot load openapi spec file");
+                    in = Config.getInstance().getInputStreamFromFile(OPENAPI_YAML_CONFIG);
+                    if(in == null) {
+                        in = Config.getInstance().getInputStreamFromFile(OPENAPI_YML_CONFIG);
+                        if(in == null) {
+                            throw new IOException("Cannot load openapi spec file");
+                        }
+                    }
                 }
             }
             spec = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
@@ -101,13 +109,29 @@ public class OpenApiValidator {
      * @param openapiPath The schema file name and path to use when validating request bodies
      */
     public OpenApiValidator(String openapiPath) {
-        try (InputStream in = this.getClass().getClassLoader().getResourceAsStream(openapiPath);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+        InputStream in = null;
+        try {
+            in = this.getClass().getClassLoader().getResourceAsStream(openapiPath);
+            if (in == null) {
+                in = Config.getInstance().getInputStreamFromFile(openapiPath);
+                if(in == null) {
+                    throw new IOException("Cannot load openapi spec file");
+                }
+            }
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             spec = reader.lines().collect(Collectors.joining("\n"));
             openApiHelper = new OpenApiHelper(spec);
             schemaValidator = new SchemaValidator(openApiHelper.openApi3);
         } catch (IOException e) {
             logger.error("initial failed:" + e);
+        } finally {
+            try {
+                if( in!=null ) {
+                    in.close();
+                }
+            } catch(IOException e) {
+                logger.error(" Failed to close input stream:" + e);
+            }
         }
     }
 

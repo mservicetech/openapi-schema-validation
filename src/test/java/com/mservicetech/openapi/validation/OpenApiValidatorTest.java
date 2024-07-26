@@ -126,7 +126,20 @@ public class OpenApiValidatorTest {
     }
 
 
-    @Test
+	@Test
+	public void testRequestBodyContentTypeWithEncoding() {
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/req1.json");
+		String req1 = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+
+		RequestEntity requestEntity = new RequestEntity();
+		requestEntity.setRequestBody(req1);
+		requestEntity.setContentType("application/json; charset=utf-8");
+		Status status = openApiValidator.validateRequestPath("/pets", "post", requestEntity);
+		Assert.assertNull(status);
+	}
+
+
+	@Test
     public void testRequestPath() {
 
         RequestEntity requestEntity = new RequestEntity();
@@ -368,6 +381,32 @@ public class OpenApiValidatorTest {
         Assert.assertEquals( status.getCode(), "ERR11004");
         //{"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - search.name: must be at least 1 characters long","severity":"ERROR"}
     }
+
+    @Test
+    public void testRequestMediaType() {
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        requestEntity.setQueryParameters(queryMap);
+        requestEntity.setContentType("application/xml");
+        Status status = openApiValidator.validateRequestPath("/pets", "post", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status.getCode(), "ERR11108");
+    }
+
+
+    @Test
+    public void testRequestMediaType2() {
+        RequestEntity requestEntity = new RequestEntity();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("limit", 12);
+        queryMap.put("search", "tag,cat,name");
+        requestEntity.setQueryParameters(queryMap);
+        requestEntity.setContentType("application/json");
+        Status status = openApiValidator.validateRequestPath("/pets", "get", requestEntity);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status.getCode(), "ERR11108");
+    }
+
 
     @Test
     public void testResponseBody() {

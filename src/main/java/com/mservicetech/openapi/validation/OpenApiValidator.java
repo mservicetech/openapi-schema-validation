@@ -44,6 +44,7 @@ public class OpenApiValidator {
     final String STATUS_INVALID_REQUEST_PATH = "ERR10007";
     final String STATUS_METHOD_NOT_ALLOWED = "ERR10008";
     final String STATUS_CONTENT_TYPE_MISMATCH = "ERR10015";
+    final String STATUS_CONTENT_TYPE_NOT_SUPPORTED = "ERR11108";
 
     final String VALIDATOR_REQUEST_BODY_UNEXPECTED = "ERR11013";
     final String VALIDATOR_REQUEST_BODY_MISSING = "ERR11014";
@@ -167,10 +168,15 @@ public class OpenApiValidator {
         }
 
         if (requestEntity!=null) {
+            if(requestEntity.getContentMediaType()!=null &&
+               openApiOperation.getOperation().getRequestBody().getContentMediaType(requestEntity.getContentMediaType())==null) {
+                return new Status(STATUS_CONTENT_TYPE_NOT_SUPPORTED, requestEntity.getContentMediaType());
+            }
+
             NormalisedPath requestPath = openApiOperation.getPathString();
             Status status = validateRequestParameters(requestEntity, requestPath, openApiOperation);
             if(status != null) return status;
-            if ((requestEntity.getContentType()==null || requestEntity.getContentType().startsWith("application/json"))) {
+            if ((requestEntity.getContentType()==null || requestEntity.getContentMediaType().equals("application/json"))) {
                 try {
                     Object body = attachJsonBody(requestEntity.getRequestBody());
                     status = validateRequestBody(body, openApiOperation);

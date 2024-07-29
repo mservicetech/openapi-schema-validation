@@ -1,5 +1,6 @@
 package com.mservicetech.openapi.common;
 
+import com.networknt.oas.model.MediaType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +65,13 @@ public class RequestEntity {
     }
 
     public void setContentType(String contentType) {
-        this.contentType = contentType;
+		this.contentType = contentType;
+	}
+
+	public String getContentMediaType() {
+		if(contentType!=null && contentType.contains(";")) {
+			return contentType.substring(0,  contentType.lastIndexOf(";"));
+		}
+		return contentType;
     }
 }

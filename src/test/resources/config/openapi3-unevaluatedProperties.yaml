@@ -1,0 +1,63 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+paths:
+  /pets:
+    post:
+      summary: Create a pet
+      operationId: createPets
+      requestBody:
+        description: Pet to add to the store
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        '201':
+          description: Null response
+components:
+
+  schemas:
+    address:
+      properties:
+        residence:
+          $ref: '#/components/schemas/residence'
+          description: Residence details where the person lives
+        city:
+          type: string
+          description: City where the person lives.
+        street:
+          type: string
+          description: street where the person lives.
+        pinCode:
+          type: number
+          description: pincode of street
+      unevaluatedProperties: false
+    residence:
+      properties:
+        flatNumber:
+          type: string
+        flatName:
+          type: string
+        landmark:
+          type: string
+      unevaluatedProperties: false
+    Person:
+      properties:
+        firstName:
+          type: string
+          description: The person's first name.
+        lastName:
+          type: string
+          description: The person's last name.
+        age:
+          description: Age in years which must be equal to or greater than zero.
+          type: integer
+          minimum: 0
+        address:
+          description: Address of the person.
+          $ref: '#/components/schemas/address'
+      unevaluatedProperties: false
+

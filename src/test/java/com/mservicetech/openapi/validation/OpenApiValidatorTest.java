@@ -9,7 +9,7 @@ import com.mservicetech.openapi.common.ResponseEntity;
 import com.networknt.status.Status;
 import org.junit.Assert;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 
 public class OpenApiValidatorTest {
 
-    static OpenApiValidator openApiValidator;
+    private OpenApiValidator openApiValidator;
 
-    @BeforeClass
-    public static void setUp() {
+    @Before
+    public void setUp() {
         openApiValidator = new OpenApiValidator("openapi.yaml");
     }
 
@@ -502,5 +502,21 @@ public class OpenApiValidatorTest {
         Assert.assertEquals(status.getCode(), "ERR11004");
         // {"statusCode":400,"code":"ERR11004","message":"VALIDATOR_SCHEMA","description":"Schema Validation Error - $: string found, integer expected","severity":"ERROR"}
     }
+
+
+	@Test
+	public void testOpenApi3UnevaluatedProperties() {
+		openApiValidator = new OpenApiValidator("config/openapi3-unevaluatedProperties.yaml");
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("json/person_bad_req.json");
+		String req1 = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
+
+		RequestEntity requestEntity = new RequestEntity();
+		requestEntity.setRequestBody(req1);
+		requestEntity.setContentType("application/json");
+		Status status = openApiValidator.validateRequestPath("/pets", "post", requestEntity);
+		Assert.assertNotNull(status);
+		Assert.assertEquals(status.getDescription(), "Schema Validation Error - $: property 'invalid' is not evaluated and the schema does not allow unevaluated properties");
+	}
+
 
 }
